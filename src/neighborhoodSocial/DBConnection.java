@@ -3,7 +3,6 @@
  */
 package neighborhoodSocial;
 
-
 /**
  * @author Tim Morris
  * static class for managing database connections.
@@ -52,14 +51,12 @@ class DBConnection {
 		setDatabase(getMongoClient().getDatabase(dbName));
 	}
 
-
 	/**
 	 * @return the database
 	 */
 	protected static MongoDatabase getDatabase() {
 		return database;
 	}
-
 
 	/**
 	 * @param database the database to set
@@ -75,7 +72,6 @@ class DBConnection {
 		return mongoClient;
 	}
 
-
 	/**
 	 * @param mongoClient the database to set
 	 */
@@ -86,6 +82,5 @@ class DBConnection {
 	protected static void disconnect() {
 		getMongoClient().close();
 	}
-
 
 } // end of DBConnection class
