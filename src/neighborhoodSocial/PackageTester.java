@@ -13,10 +13,10 @@ public class PackageTester {
 	public static void main(String[] args) {
 		String[] test = new String[2];
 		String loginType = "writeAuth";
-
-		PasswordManager pm = new PasswordManager();
+		
+		
 		/*
-		test = pm.getServiceCredentials(loginType);  // (login, query, post, writeAuth)
+		test = PasswordManager.getServiceCredentials(loginType);  // (login, query, post, writeAuth)
 		System.out.println(test[0]);
 		System.out.println(test[1]);
 		*/
@@ -33,6 +33,7 @@ public class PackageTester {
 		System.out.println(test3);
 		*/
 
+		
 	}
 
 }

@@ -12,16 +12,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 class PasswordManager {
-	
-	public PasswordManager() {
-		
-	}
-	
+
 	/**
 	 * @param String type	service account type (login, query, post, writeAuth)
 	 * @return String array with service account credentials
 	 */
-	protected String[] getServiceCredentials(String type) {
+	protected static String[] getServiceCredentials(String type) {
 		Scanner scan 			= null;
 		File file				= null;
 		FileInputStream input 	= null;
@@ -62,7 +58,7 @@ class PasswordManager {
 	 * 
 	 * @return random salt
 	 */
-	protected String generateSalt() {
+	protected static String generateSalt() {
 		SecureRandom random = null;
 		StringBuilder salt	= null;
 		byte[] saltInBytes	= null;
@@ -85,7 +81,7 @@ class PasswordManager {
 	 * @param salt String	random salt, either just generated or pulled from DB
 	 * @return salted, hashed password String
 	 */
-	protected String hashPassword(String pass, String salt) {
+	protected static String hashPassword(String pass, String salt) {
 		MessageDigest digest		= null;
 		byte[] hashInBytes			= null;
 		String passWithSalt			= null;
