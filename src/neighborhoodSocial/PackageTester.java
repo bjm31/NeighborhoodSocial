@@ -33,7 +33,8 @@ public class PackageTester {
 		System.out.println(test3);
 		*/
 
-		
+		DBConnection.connect("query");
+		DBConnection.disconnect();
 	}
 
 }
