@@ -2,6 +2,7 @@
  * 
  */
 package neighborhoodSocial;
+import org.bson.types.ObjectId;
 
 /**
  * @author Tim Morris
@@ -11,9 +12,10 @@ public class PackageTester {
 
 	
 	public static void main(String[] args) {
+		/*
 		String[] test = new String[2];
-		String loginType = "writeAuth";
-		
+		String loginType = "query";
+		*/
 		
 		/*
 		test = PasswordManager.getServiceCredentials(loginType);  // (login, query, post, writeAuth)
@@ -33,8 +35,19 @@ public class PackageTester {
 		System.out.println(test3);
 		*/
 
-		DBConnection.connect("query");
-		DBConnection.disconnect();
+		/*
+		String inviteCode = "aRandomString";
+		ObjectId id = null;
+		try {
+			id = InviteHandler.AcceptInvite(inviteCode);
+			System.out.println(id.toString());
+		} catch (InviteCodeNotFoundException e) {
+			System.out.println("\"" + inviteCode + "\" not found.");
+		}
+		*/
+		
+		InviteHandler.generateInviteCode(new ObjectId("5d9bf1dc7b1e78663c91c924"));
+		
 	}
 
 }
