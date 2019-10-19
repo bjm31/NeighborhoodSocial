@@ -1,7 +1,7 @@
 /**
  * 
  */
-package neighborhoodSocial;
+package backend.exception;
 
 /**
  * @author Tim Morris

@@ -1,4 +1,4 @@
-package neighborhoodSocial;
+package backend;
 
 /**
  * 

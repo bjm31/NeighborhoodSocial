@@ -1,7 +1,7 @@
 /**
  * 
  */
-package neighborhoodSocial;
+package backend;
 import org.bson.types.ObjectId;
 
 /**

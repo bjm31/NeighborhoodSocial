@@ -1,7 +1,10 @@
-package neighborhoodSocial;
+package backend;
 
 import static com.mongodb.client.model.Filters.*;
 import com.mongodb.client.MongoDatabase;
+
+import backend.exception.InviteCodeNotFoundException;
+
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import org.bson.types.ObjectId;

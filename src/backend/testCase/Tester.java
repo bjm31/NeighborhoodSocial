@@ -1,4 +1,5 @@
-package test;
+package backend.testCase;
+import backend.LogonAgent;
 import neighborhoodSocial.*;
 
 public class Tester {

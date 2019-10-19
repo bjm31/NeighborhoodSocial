@@ -1,4 +1,4 @@
-package neighborhoodSocial;
+package backend;
 // this is a package-only class and should only be accessible to other classes within the neighborhoodSocial package
 
 import java.io.File;
