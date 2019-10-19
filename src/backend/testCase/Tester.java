@@ -1,6 +1,6 @@
 package backend.testCase;
-import backend.LogonAgent;
-import neighborhoodSocial.*;
+import backend.*;
+
 
 public class Tester {
 
@@ -13,7 +13,7 @@ public class Tester {
 //	db.createAccount(h_id, "tmorris", "Tim Morris", "email@domain", "pic.jpg", "pass123");
 		
 
-	LogonAgent la = new LogonAgent();
+//	LogonAgent la = new LogonAgent();
 	
 	} // end of main()
 	

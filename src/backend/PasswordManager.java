@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -17,41 +18,38 @@ class PasswordManager {
 	 * @param String type	service account type (login, query, post, writeAuth)
 	 * @return String array with service account credentials
 	 */
-	protected static String[] getServiceCredentials(String type) {
-		Scanner scan 			= null;
-		File file				= null;
-		FileInputStream input 	= null;
-		String[] credsAll		= null;
-		String[] credsOne		= null;
-		int index				= 2;
+	protected static Credential getServiceCredentials(String type) {
+		Scanner scan 				= null;
+		File file					= null;
+		FileInputStream input 		= null;
+		ArrayList<Credential> creds = null;
+		int index					= 2;
 		
-		credsAll = new String[8];
+		creds = new ArrayList<Credential>();
 		file = new File("cred.dat");
 		try {
 			input = new FileInputStream(file);
 			scan = new Scanner(input);
-			for (int i = 0; i < 8; i ++) {
-				credsAll[i] = scan.nextLine().trim();
+			while (scan.hasNext()) {
+				creds.add(new Credential(scan.nextLine().trim(), scan.nextLine().trim()));
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("Critical File Access Error.");
 		}
 				
-		if(type.equals("login")) {
+		if(type.equals("local_agent")) {
 			index = 0;
-		} else if (type.equals("query")) {
+		} else if (type.equals("standard_user")) {
 			index = 2;
-		} else if (type.equals("post")) {
+		} else if (type.equals("read_credentials")) {
 			index = 4;
-		} else if (type.equals("writeAuth")) {
+		} else if (type.equals("write_credentials")) {
 			index = 6;
+		} else if (type.equals("invte")) {
+			index = 8;
 		}
 		
-		credsOne = new String[2];
-		credsOne[0] = credsAll[index];
-		credsOne[1] = credsAll[index + 1];
-		
-		return credsOne;
+		return creds.get(index);
 	}
 	
 	/**

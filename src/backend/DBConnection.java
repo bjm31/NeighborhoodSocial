@@ -25,7 +25,7 @@ class DBConnection {
 	private static String connectionFileName = "connection.dat";
 	
 	protected static void connect (String connectionType) {
-		String credentials[] 	= null;
+		Credential credential 	= null;
 		File file 				= null;
 		FileInputStream input	= null;
 		Scanner scan			= null;
@@ -35,7 +35,7 @@ class DBConnection {
 		String fullUri			= null;
 		MongoClientURI uri		= null;
 		
-		credentials = PasswordManager.getServiceCredentials(connectionType);
+		credential = PasswordManager.getServiceCredentials(connectionType);
 		file = new File(connectionFileName);
 		try {
 			input = new FileInputStream(file);
@@ -46,14 +46,14 @@ class DBConnection {
 		} catch (FileNotFoundException e) {
 			System.out.println("Critical File Access Error.");
 		}
-		fullUri = uriPart1 + credentials[0] + ":" + credentials[1] + uriPart2;
-System.out.println("Full URI:\n" + fullUri);	//fixme delete
+		fullUri = uriPart1 + credential.getUser() + ":" + credential.getPass() + uriPart2;
+System.out.println("Full URI:\n" + fullUri);																	//fixme delete
 		
 		uri = new MongoClientURI(fullUri);
 		setMongoClient(new MongoClient(uri));
 		setDatabase(getMongoClient().getDatabase(dbName));
 
-System.out.println("Connected to " + dbName + " as " + credentials[0] + " " + credentials[1]); // fixme delete
+System.out.println("Connected to " + dbName + " as " + credential.getUser() + " " + credential.getPass()); 		// fixme delete
 
 	}
 
