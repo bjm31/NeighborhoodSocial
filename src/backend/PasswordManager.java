@@ -68,7 +68,7 @@ class PasswordManager {
 	}
 	
 	/**
-	 * adds a salt to password and hashes with SHA3-512
+	 * adds a salt to password and hashes with SHA-512
 	 * @param pass String	cleartext password
 	 * @param salt String	random salt, either just generated or pulled from DB
 	 * @return salted, hashed password String
@@ -76,20 +76,25 @@ class PasswordManager {
 	protected static String hashPassword(char[] pass, String salt) {
 		MessageDigest digest		= null;
 		byte[] hashInBytes			= null;
-		StringBuilder saltedHashed 	= null;
+		StringBuffer hexString	 	= null;
 		
 		try {
-			digest = MessageDigest.getInstance("SHA3-512");
+			digest = MessageDigest.getInstance("SHA-512");
 		} catch (NoSuchAlgorithmException e) {}
 		
 		hashInBytes = digest.digest((new String(pass) + salt).getBytes(StandardCharsets.UTF_8));
 		
-		saltedHashed = new StringBuilder();
-		for (byte b : hashInBytes) {
-			saltedHashed.append(String.format("%02x",  b));
+		hexString = new StringBuffer();
+		for (int i = 0; i < hashInBytes.length; i ++) {
+			String hex = Integer.toHexString(0xff & hashInBytes[i]);
+			if (hex.length() == 1) { 
+				hexString.append('0');
+			}
+			hexString.append(hex);
+			
 		}
 		
-		return saltedHashed.toString();
+		return hexString.toString();
 	}
 	
 	/**

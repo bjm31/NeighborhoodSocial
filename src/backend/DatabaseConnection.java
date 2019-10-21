@@ -15,10 +15,11 @@ class DatabaseConnection {
 	
 	private MongoDatabase database;
 	private MongoClient mongoClient;
+	private String dbName;
 	private final String connectionFileName = "connection.dat";
-	private final String dbName = "TestDB";						//TODO change this before prod deployment
 	
 	protected DatabaseConnection(String connectionType) {
+		this.dbName = null;
 		try {
 			connect(connectionType);
 		} catch (DatabaseConnectionFailureException e) {
@@ -37,6 +38,9 @@ class DatabaseConnection {
 		FileInputStream	input		= null;
 		Scanner scan				= null;
 		MongoClientURI mongoURI		= null;
+		String uri1					= null;
+		String uri2					= null;
+		char[] pass					= null;
 		
 		credential = PasswordManager.getServiceCredentials(connectionType);
 		file = new File(connectionFileName);
@@ -44,16 +48,18 @@ class DatabaseConnection {
 		try {
 			input = new FileInputStream(file);
 			scan = new Scanner(input);
-			mongoURI = new MongoClientURI(scan.nextLine().trim() + credential.getUser()
-				+ ":" + new String(credential.getPass()) + scan.nextLine().trim());
+			setDbName(scan.nextLine().trim());
+			uri1 = scan.nextLine().trim() + credential.getUser() + ":";
+			uri2 = scan.nextLine().trim();
 		} catch (FileNotFoundException e) {
 			e.getMessage();
 		}
+		mongoURI = new MongoClientURI(uri1 + new String(credential.getPass()) + uri2);
+		
+		setMongoClient(new MongoClient(mongoURI));
 		if (mongoClient == null) {
 			throw new DatabaseConnectionFailureException("Failed to connect to database");
 		}
-		
-		setMongoClient(new MongoClient(mongoURI));
 		setDatabase(getMongoClient().getDatabase(dbName));		
 	}
 
@@ -91,4 +97,21 @@ class DatabaseConnection {
 	protected void disconnect() {
 		getMongoClient().close();
 	}
+
+	/**
+	 * @return the dbName
+	 */
+	protected String getDbName() {
+		String dbName = this.dbName;
+		return dbName;
+	}
+
+	/**
+	 * @param dbName the dbName to set
+	 */
+	protected void setDbName(String dbName) {
+		this.dbName = dbName;
+	}
+	
+	
 }
