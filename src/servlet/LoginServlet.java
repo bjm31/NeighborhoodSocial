@@ -1,8 +1,6 @@
 package servlet;
 
 import backend.DatabaseActions;
-import backend.*;
-import backend.exception.*;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -24,17 +22,14 @@ public class LoginServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		
-		try {
-			if (DatabaseActions.login(user, pass)) {
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/successfulLogin.html");
-//				dispatcher.forward(request, response);
-			}
-			else {
-				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/loginError.html");
-//				rd.include(request, response);
-			}
-		} catch (InvalidLoginException e) {}
-		
+		if (DatabaseActions.login(user, pass)) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/successfulLogin.html");
+			dispatcher.forward(request, response);
+		}
+		else {
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/loginError.html");
+			rd.include(request, response);
+		}		
 	}	
 	
 

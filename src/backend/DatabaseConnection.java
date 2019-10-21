@@ -3,13 +3,18 @@ package backend;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
-
-import backend.exception.DatabaseConnectionFailureException;
-
 import java.io.File;
+//import java.io.InputStream;
+//import java.io.InputStreamReader;
+//import java.nio.charset.StandardCharsets;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Scanner;;
+import java.io.IOException;
+import java.io.PrintWriter;
+//import java.io.IOException;
+//import java.io.BufferedReader;
+import java.util.Scanner;
+//import java.nio.charset.StandardCharsets;
 
 class DatabaseConnection {
 	
@@ -20,11 +25,7 @@ class DatabaseConnection {
 	
 	protected DatabaseConnection(String connectionType) {
 		this.dbName = null;
-		try {
-			connect(connectionType);
-		} catch (DatabaseConnectionFailureException e) {
-			System.out.println(e.getMessage());
-		}
+		connect(connectionType);		
 	}
 
 	/**
@@ -32,7 +33,7 @@ class DatabaseConnection {
 	 * @param connectionType
 	 * @throws DatabaseConnectionFailureException
 	 */
-	private void connect(String connectionType) throws DatabaseConnectionFailureException {
+	private void connect(String connectionType) {
 		Credential credential		= null;
 		File file					= null;
 		FileInputStream	input		= null;
@@ -40,25 +41,36 @@ class DatabaseConnection {
 		MongoClientURI mongoURI		= null;
 		String uri1					= null;
 		String uri2					= null;
-		char[] pass					= null;
-		
+				
 		credential = PasswordManager.getServiceCredentials(connectionType);
+		
+
+/*
 		file = new File(connectionFileName);
 		
 		try {
 			input = new FileInputStream(file);
+
 			scan = new Scanner(input);
 			setDbName(scan.nextLine().trim());
 			uri1 = scan.nextLine().trim() + credential.getUser() + ":";
 			uri2 = scan.nextLine().trim();
 		} catch (FileNotFoundException e) {
+
 			e.getMessage();
 		}
+*/
+dbName = "TestDB";
+uri1 = "mongodb+srv://" + credential.getUser() + ":";								// TODO delete
+uri2 = "@neighborhoodsocial-cv2tl.mongodb.net/admin?retryWrites=true&w=majority";   // TODO delete
+		
 		mongoURI = new MongoClientURI(uri1 + new String(credential.getPass()) + uri2);
+
 		
 		setMongoClient(new MongoClient(mongoURI));
 		if (mongoClient == null) {
-			throw new DatabaseConnectionFailureException("Failed to connect to database");
+			System.out.println("Failed to connect to database");
+			
 		}
 		setDatabase(getMongoClient().getDatabase(dbName));		
 	}
@@ -113,5 +125,21 @@ class DatabaseConnection {
 		this.dbName = dbName;
 	}
 	
+/*	
+	private String convertInputStream(InputStream inputStream) throws IOException{
+		StringBuilder sb = new StringBuilder();
+		String line = null;
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+		} finally {}
+		
+		return sb.toString();
+	}
+*/
 	
+
 }
+

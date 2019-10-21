@@ -27,6 +27,13 @@ class PasswordManager {
 		ArrayList<Credential> credentials 	= null;
 		
 		credentials = new ArrayList<Credential>();
+		
+credentials.add(new Credential("local_agent_svc", "iJCLgzzLb0siAbuX".toCharArray()));		// TODO - DELETE BEFORE PROD!
+credentials.add(new Credential("standard_user_svc", "MlR6a1KKOyArWTv1".toCharArray()));		// TODO - DELETE BEFORE PROD!
+credentials.add(new Credential("read_credentials_svc", "uHZyAShB7d9GLzUq".toCharArray()));	// TODO - DELETE BEFORE PROD!
+credentials.add(new Credential("write_credentials_svc", "8EzWQFTKd4tJY5rb".toCharArray())); // TODO - DELETE BEFORE PROD!
+credentials.add(new Credential("invite_svc", "LYtJFkQym30Dc3CE".toCharArray()));			// TODO - DELETE BEFORE PROD!
+/*		
 		file = new File(credentialsFile);
 		try {
 			input = new FileInputStream(file);
@@ -37,6 +44,7 @@ class PasswordManager {
 		} catch (FileNotFoundException e) {
 			System.out.println("Critical File Access Error");;
 		}
+*/
 		
 		for (Credential c : credentials) {
 			if (c.getUser().contains(type)) {

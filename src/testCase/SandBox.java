@@ -10,6 +10,7 @@ import org.junit.Test;
 
 public class SandBox {
 
+	@SuppressWarnings("unused")
 	@Test
 	public void test() {
 //		protected static String hashPassword(char[] pass, String salt)
