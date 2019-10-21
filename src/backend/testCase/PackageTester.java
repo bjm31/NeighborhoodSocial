@@ -1,8 +1,10 @@
 /**
  * 
  */
-package backend;
+package backend.testCase;
 import org.bson.types.ObjectId;
+
+import backend.InviteHandler;
 
 /**
  * @author Tim Morris
