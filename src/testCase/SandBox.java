@@ -1,7 +1,5 @@
 package testCase;
 
-import static org.junit.Assert.*;
-
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -2,7 +2,6 @@ package backend;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.ArrayList;
