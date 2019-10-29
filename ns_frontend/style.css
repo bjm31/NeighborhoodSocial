@@ -6,7 +6,7 @@ body {
 .ns_title {
 	text-align:center;
 	font-size:28px;
-	color:rgb(255,255,255,.8);
+	color:#ffffff;
 	margin-top:-24px;
 }
 .title_line {
@@ -15,7 +15,7 @@ body {
 	margin-right:auto;
 	border:none;
 	height:20px;
-	background-color:rgb(51,102,102,.3);
+	background-color:#336666;
 	margin-top:-28px;
 }
 .greeting {
@@ -36,7 +36,7 @@ body {
 	margin-top:40px;
 }
 .ns_submit {
-	background-color:rgb(51, 102, 204,.3);
+	background-color:#3366CC;
 	border-color:#FFFFFF;
 	color:#FFFFFF;
 	padding:8px 16px;
@@ -44,7 +44,7 @@ body {
 	margin-bottom:40px;
 }
 .ns_cancel {
-	background-color:rgb(51, 102, 204,0);
+	background-color:#3366CC;
 	border-color:#FFFFFF;
 	color:#FFFFFF;
 	padding:8px 16px;
