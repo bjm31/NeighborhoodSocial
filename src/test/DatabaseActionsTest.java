@@ -1,10 +1,10 @@
-package testCase;
+package test;
 
+import org.junit.jupiter.api.Test;
 import static org.junit.Assert.*;
 import backend.DatabaseActions;
 import org.bson.types.ObjectId;
 
-import org.junit.Test;
 
 public class DatabaseActionsTest {
 

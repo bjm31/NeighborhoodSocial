@@ -1,4 +1,4 @@
-package testCase;
+package test;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
