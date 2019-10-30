@@ -11,11 +11,12 @@ import javax.servlet.http.*;
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet("/home")
+
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String user = request.getParameter("username");
 		char[] pass = request.getParameter("password").toCharArray();
 		response.setContentType("text/html");
@@ -23,14 +24,17 @@ public class LoginServlet extends HttpServlet {
 		
 		
 		if (DatabaseActions.login(user, pass)) {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/successfulLogin.html");
-			dispatcher.forward(request, response);
+			RequestDispatcher rd = request.getRequestDispatcher("successfulLogin.html");
+			rd.forward(request, response);
 		}
 		else {
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/loginError.html");
+			out.print("Invalid Credentials");
+			RequestDispatcher rd = request.getRequestDispatcher("index.html");
 			rd.include(request, response);
 		}		
-	}	
+	}
 	
-
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		doGet(request, response);
+	}
 }
