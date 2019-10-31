@@ -1,9 +1,8 @@
 package backend;
 
-//import com.mongodb.client.MongoDatabase;
-//import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
 import org.bson.types.ObjectId;
-//import org.bson.Document;
 import static com.mongodb.client.model.Filters.*;
 
 
@@ -35,6 +34,27 @@ public class DatabaseActions {
 		db.disconnect();
 		
 		return isAuthenticated;
+	}
+	
+	public static boolean validInvite(String inviteCode) {
+		DatabaseConnection db 			= null;
+		MongoCollection<Document> coll	= null;
+		Document doc					= null;
+		boolean isValid					= false;
+		
+		db = new DatabaseConnection("invite");
+		coll = db.getDatabase().getCollection("InviteCode");
+		doc = coll.find(eq("code", inviteCode)).first();
+				
+		if (doc == null) {
+			isValid = false;
+		} else {
+			isValid = true;
+			coll.findOneAndUpdate(eq("code", inviteCode), new Document("$set", new Document("was_used", true)));
+		}
+		db.disconnect();	
+		
+		return isValid;
 	}
 	
 
