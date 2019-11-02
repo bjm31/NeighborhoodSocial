@@ -1,9 +1,9 @@
 package backend;
 
-import java.io.File;
-import java.io.FileInputStream;
+//import java.io.File;
+//import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
+//import java.util.Scanner;
 import java.util.ArrayList;
 
 import java.security.MessageDigest;
@@ -12,7 +12,7 @@ import java.security.SecureRandom;
 
 class PasswordManager {
 	
-	private static final String credentialsFile = "cred.dat";
+//	private static final String credentialsFile = "cred.dat";
 
 	/**
 	 * 
@@ -20,9 +20,9 @@ class PasswordManager {
 	 * @return needed credentials
 	 */
 	protected static Credential getServiceCredentials(String type) {
-		Scanner scan						= null;
-		File file							= null;
-		FileInputStream	input 				= null;
+//		Scanner scan						= null;
+//		File file							= null;
+//		FileInputStream	input 				= null;
 		ArrayList<Credential> credentials 	= null;
 		
 		credentials = new ArrayList<Credential>();
@@ -100,6 +100,7 @@ credentials.add(new Credential("invite_svc", "LYtJFkQym30Dc3CE".toCharArray()));
 			hexString.append(hex);
 			
 		}
+		PasswordManager.clear(pass);
 		
 		return hexString.toString();
 	}

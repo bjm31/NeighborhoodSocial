@@ -3,22 +3,21 @@ package backend;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
-import java.io.File;
+//import java.io.File;
 //import java.io.InputStream;
 //import java.io.InputStreamReader;
 //import java.nio.charset.StandardCharsets;
-import java.io.FileInputStream;
+//import java.io.FileInputStream;
 //import java.io.IOException;
 //import java.io.BufferedReader;
-import java.util.Scanner;
-//import java.nio.charset.StandardCharsets;
+//import java.util.Scanner;
 
 class DatabaseConnection {
 	
 	private MongoDatabase database;
 	private MongoClient mongoClient;
 	private String dbName;
-	private final String connectionFileName = "connection.dat";
+//	private final String connectionFileName = "connection.dat";
 	
 	protected DatabaseConnection(String connectionType) {
 		this.dbName = null;
@@ -32,9 +31,9 @@ class DatabaseConnection {
 	 */
 	private void connect(String connectionType) {
 		Credential credential		= null;
-		File file					= null;
-		FileInputStream	input		= null;
-		Scanner scan				= null;
+//		File file					= null;
+//		FileInputStream	input		= null;
+//		Scanner scan				= null;
 		MongoClientURI mongoURI		= null;
 		String uri1					= null;
 		String uri2					= null;
