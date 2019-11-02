@@ -36,6 +36,7 @@ public class DatabaseActions {
 		
 		hash = PasswordManager.hashPassword(
 				passToCheck, db.getDatabase().getCollection("Authentication").find(eq("N_id", n_id)).first().get("salt").toString());
+		PasswordManager.clear(passToCheck);
 		
 		if (!(hash.equals(db.getDatabase().getCollection("Authentication").find(eq("N_id", n_id)).first().get("password").toString()))) {
 			isAuthenticated = false;
@@ -43,7 +44,7 @@ public class DatabaseActions {
 			isAuthenticated = true;
 		
 		db.disconnect();
-		
+				
 		return isAuthenticated;
 	}
 	
