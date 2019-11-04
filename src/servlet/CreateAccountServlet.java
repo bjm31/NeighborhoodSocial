@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Cookie;
 
 import backend.DatabaseActions;
 import java.util.Arrays;
@@ -37,13 +38,22 @@ public class CreateAccountServlet extends HttpServlet {
 		String photo		= request.getParameter("photo");
 		char[] password1	= request.getParameter("password").toCharArray();
 		char[] password2	= request.getParameter("password_confirm").toCharArray();
+		Cookie[] cookies	= null;
+		Cookie cookie		= null;
 		
 		if (!Arrays.equals(password1, password2)) {
 			RequestDispatcher rd = request.getRequestDispatcher("badPasword.html");			//TODO  update with actual HTML page
 			rd.forward(request, response);
 		}
 		
-		DatabaseActions.createNewUser("aRandomString", username, fname, lname, email, photo); //TODO fix invite code String
+		cookies = request.getCookies();
+		for (Cookie c : cookies) {
+			if (c.getName().equalsIgnoreCase("inviteCodeCookie")) {
+				cookie = c;
+			}
+		}
+		
+		DatabaseActions.createNewUser(cookie.getValue(), username, fname, lname, email, photo);
 		DatabaseActions.setNewPassword(username, password1);
 	}
 

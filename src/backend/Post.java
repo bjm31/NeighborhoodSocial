@@ -4,7 +4,7 @@ import org.bson.types.ObjectId;
 import org.bson.Document;
 import java.time.Instant;
 
-public class Post {
+class Post {
 	
 	private ObjectId neighborID;
 	private ObjectId householdID;
@@ -17,9 +17,8 @@ public class Post {
 	/**
 	 * default constructor
 	 */
-	public Post() {
+	protected Post() {
 		this.neighborID = null;
-		this.householdID= null;
 		this.displayName= null;
 		this.type 		= null;
 		this.content 	= null;
@@ -33,9 +32,8 @@ public class Post {
 	 * @param type
 	 * @param content
 	 */
-	public Post(ObjectId n_id, ObjectId h_id, String displayName, String type, String content) {
+	protected Post(ObjectId n_id, String displayName, String type, String content) {
 		this.neighborID = n_id;
-		this.householdID= h_id;
 		this.displayName= displayName;
 		this.type 		= type;
 		this.content 	= content;
@@ -46,7 +44,7 @@ public class Post {
 	/**
 	 * creates and sets mongo document
 	 */
-	public void createDocument() {
+	protected void createDocument() {
 		Document doc = new Document();
 		doc.append("N_id",  this.getNeighborID());
 		doc.append("H_id",  this.getHouseholdID());
