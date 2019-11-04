@@ -13,15 +13,15 @@ import com.mongodb.client.MongoDatabase;
 //import java.util.Scanner;
 
 class DatabaseConnection {
-	
+
 	private MongoDatabase database;
 	private MongoClient mongoClient;
 	private String dbName;
 //	private final String connectionFileName = "connection.dat";
-	
+
 	protected DatabaseConnection(String connectionType) {
 		this.dbName = null;
-		connect(connectionType);		
+		connect(connectionType);
 	}
 
 	/**
@@ -30,48 +30,41 @@ class DatabaseConnection {
 	 * @throws DatabaseConnectionFailureException
 	 */
 	private void connect(String connectionType) {
-		Credential credential		= null;
+		Credential credential = null;
 //		File file					= null;
 //		FileInputStream	input		= null;
 //		Scanner scan				= null;
-		MongoClientURI mongoURI		= null;
-		String uri1					= null;
-		String uri2					= null;
-				
+		MongoClientURI mongoURI = null;
+		String uri1 = null;
+		String uri2 = null;
+
 		credential = PasswordManager.getServiceCredentials(connectionType);
-		
 
-/*
-		file = new File(connectionFileName);
-		
-		try {
-			input = new FileInputStream(file);
+		/*
+		 * file = new File(connectionFileName);
+		 * 
+		 * try { input = new FileInputStream(file);
+		 * 
+		 * scan = new Scanner(input); setDbName(scan.nextLine().trim()); uri1 =
+		 * scan.nextLine().trim() + credential.getUser() + ":"; uri2 =
+		 * scan.nextLine().trim(); } catch (FileNotFoundException e) {
+		 * 
+		 * e.getMessage(); }
+		 */
+		dbName = "TestDB";
+		uri1 = "mongodb+srv://" + credential.getUser() + ":"; // TODO delete
+		uri2 = "@neighborhoodsocial-cv2tl.mongodb.net/admin?retryWrites=true&w=majority"; // TODO delete
 
-			scan = new Scanner(input);
-			setDbName(scan.nextLine().trim());
-			uri1 = scan.nextLine().trim() + credential.getUser() + ":";
-			uri2 = scan.nextLine().trim();
-		} catch (FileNotFoundException e) {
-
-			e.getMessage();
-		}
-*/
-dbName = "TestDB";
-uri1 = "mongodb+srv://" + credential.getUser() + ":";								// TODO delete
-uri2 = "@neighborhoodsocial-cv2tl.mongodb.net/admin?retryWrites=true&w=majority";   // TODO delete
-		
 		mongoURI = new MongoClientURI(uri1 + new String(credential.getPass()) + uri2);
 
-		
 		setMongoClient(new MongoClient(mongoURI));
 		if (mongoClient == null) {
 			System.out.println("Failed to connect to database");
-			
+
 		}
-		setDatabase(getMongoClient().getDatabase(dbName));		
+		setDatabase(getMongoClient().getDatabase(dbName));
 	}
 
-	
 	/**
 	 * @return the database
 	 */
@@ -79,7 +72,7 @@ uri2 = "@neighborhoodsocial-cv2tl.mongodb.net/admin?retryWrites=true&w=majority"
 		MongoDatabase database = this.database;
 		return database;
 	}
-	
+
 	/**
 	 * @param database the database to set
 	 */
@@ -101,7 +94,7 @@ uri2 = "@neighborhoodsocial-cv2tl.mongodb.net/admin?retryWrites=true&w=majority"
 	protected void setMongoClient(MongoClient mongoClient) {
 		this.mongoClient = mongoClient;
 	}
-	
+
 	protected void disconnect() {
 		getMongoClient().close();
 	}
@@ -120,22 +113,15 @@ uri2 = "@neighborhoodsocial-cv2tl.mongodb.net/admin?retryWrites=true&w=majority"
 	protected void setDbName(String dbName) {
 		this.dbName = dbName;
 	}
-	
-/*	
-	private String convertInputStream(InputStream inputStream) throws IOException{
-		StringBuilder sb = new StringBuilder();
-		String line = null;
-		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-			while ((line = br.readLine()) != null) {
-				sb.append(line);
-			}
-		} finally {}
-		
-		return sb.toString();
-	}
-*/
-	
+
+	/*
+	 * private String convertInputStream(InputStream inputStream) throws
+	 * IOException{ StringBuilder sb = new StringBuilder(); String line = null; try
+	 * { BufferedReader br = new BufferedReader(new InputStreamReader(inputStream,
+	 * StandardCharsets.UTF_8)); while ((line = br.readLine()) != null) {
+	 * sb.append(line); } } finally {}
+	 * 
+	 * return sb.toString(); }
+	 */
 
 }
-
