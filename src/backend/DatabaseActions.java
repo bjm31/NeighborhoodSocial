@@ -162,7 +162,7 @@ public class DatabaseActions {
 		n_id = (ObjectId) doc1.getObjectId("_id");
 		db1.disconnect();
 		
-		/* generate salted, hashed pasword */
+		/* generate salted, hashed password */
 		salt = PasswordManager.generateSalt();
 		hashed = PasswordManager.hashPassword(passToSet, salt);
 		PasswordManager.clear(passToSet);
@@ -176,5 +176,41 @@ public class DatabaseActions {
 		doc2.append("salt", salt);
 		coll2.insertOne(doc2);
 		db2.disconnect();
+	}
+	
+	/**
+	 * create new post
+	 * @param id
+	 * @param type
+	 * @param content
+	 */
+	public static void createPost(ObjectId id, String type, String content) {
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll1	= null;
+		MongoCollection<Document> coll2	= null;
+		MongoCollection<Document> coll3	= null;
+		Document doc					= null;
+		ObjectId h_id					= null;
+		String displayName				= null;
+		Post post						= null;
+		
+		db = new DatabaseConnection("standard_user");
+		coll1 = db.getDatabase().getCollection("Post");
+		
+		/* retrieve associated household_id */
+		coll2 = db.getDatabase().getCollection("Household");
+		h_id = (ObjectId) coll2.find(eq("members", id)).first().get("_id");
+		
+		/* retrieve neighbor display name */
+		coll3 = db.getDatabase().getCollection("Neighbor");
+		displayName = (String) coll3.find(eq("_id", id)).first().get("display_name");
+		
+		/* create and store mongo doc for new post */
+		post = new Post(id, h_id, displayName, type, content);
+		post.createDocument();
+		doc = post.getPostDoc();
+		coll1.insertOne(doc);
+		
+		db.disconnect();
 	}
 }
