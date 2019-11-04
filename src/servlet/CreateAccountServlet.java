@@ -45,16 +45,18 @@ public class CreateAccountServlet extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("badPasword.html");			//TODO  update with actual HTML page
 			rd.forward(request, response);
 		}
+		else {
 		
-		cookies = request.getCookies();
-		for (Cookie c : cookies) {
-			if (c.getName().equalsIgnoreCase("inviteCodeCookie")) {
-				cookie = c;
+			cookies = request.getCookies();
+			for (Cookie c : cookies) {
+				if (c.getName().equalsIgnoreCase("inviteCodeCookie")) {
+					cookie = c;
+				}
 			}
-		}
 		
-		DatabaseActions.createNewUser(cookie.getValue(), username, fname, lname, email, photo);
-		DatabaseActions.setNewPassword(username, password1);
+			DatabaseActions.createNewUser(cookie.getValue(), username, fname, lname, email, photo);
+			DatabaseActions.setNewPassword(username, password1);
+			}
 	}
 
 	/**
