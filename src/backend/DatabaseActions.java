@@ -16,11 +16,13 @@ public class DatabaseActions {
 	 * @return valid or invalid user
 	 */
 	public static boolean login(String userToCheck, char[] passToCheck) {
-		ObjectId n_id 			= null;
-		DatabaseConnection db 	= null;
-		String hash				= null;
-		boolean isAuthenticated = false;
-		String user				= null;
+		ObjectId n_id 					= null;
+		DatabaseConnection db 			= null;
+		DatabaseConnection db2 			= null;
+		MongoCollection<Document> coll 	= null;
+		String hash						= null;
+		boolean isAuthenticated 		= false;
+		String user						= null;
 		
 		user = userToCheck.toLowerCase();
 		
@@ -44,6 +46,11 @@ public class DatabaseActions {
 			isAuthenticated = true;
 		
 		db.disconnect();
+		
+		db2 = new DatabaseConnection("standard_user");
+		coll = db2.getDatabase().getCollection("Neighbor");
+		coll.findOneAndUpdate(eq("_id", n_id), new Document("$set", new Document("last_login", Instant.now())));
+		db2.disconnect();
 				
 		return isAuthenticated;
 	}
