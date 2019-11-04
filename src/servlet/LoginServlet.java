@@ -3,10 +3,14 @@ package servlet;
 import backend.User;
 import backend.DatabaseActions;
 import java.io.*;
-import javax.servlet.*;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.ServletException;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Cookie;
+import org.bson.types.ObjectId;
 import javax.servlet.http.HttpSession;
 
 
@@ -39,6 +43,11 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("user", userObj);			
 			
 			RequestDispatcher rd = request.getRequestDispatcher("successfulLogin.html");
+			ObjectId n_id = DatabaseActions.getN_id(user);
+			Cookie cookie = new Cookie("sessionCookie", n_id.toString());
+			cookie.setComment("This cookie stores the system userid");
+			cookie.setHttpOnly(true);
+			response.addCookie(cookie);
 			rd.forward(request, response);
 		}
 		else {
