@@ -6,20 +6,12 @@ package backend;
 public class User {
 	
 	private String user;
-	private String password;
+
 	//private String addr;
-	
-	public User(String user, char[] password) {
+
+	public User(String user) {
 		
 		this.user = user;
-		this.password = new String(password);
-		//this.addr = addr;
-		
-	}
-	public User(String user, String password) {
-		
-		this.user = user;
-		this.password = password;
 		//this.addr = addr;
 		
 	}
@@ -32,12 +24,5 @@ public class User {
 		this.user = user;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 
 }
