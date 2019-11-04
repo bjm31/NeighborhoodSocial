@@ -1,10 +1,16 @@
 package backend;
 
+import com.mongodb.Block;
+import com.mongodb.DBCursor;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoIterable;
+
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import static com.mongodb.client.model.Filters.*;
 import java.time.Instant;
+import java.util.Set;
 
 
 public class DatabaseActions {
@@ -191,28 +197,48 @@ public class DatabaseActions {
 		Document doc					= null;
 		ObjectId n_id					= null;
 		ObjectId h_id					= null;
+		String displayName 				= null;
 		
-		//Get House ID and neighbor ID to add to post collection
+		//Get House ID, neighbor ID, display name to add to post collection
 		db = new DatabaseConnection("standard");
 		coll = db.getDatabase().getCollection("Neighbor");
 		doc = coll.find(eq("user_name", username)).first();
 		n_id = (ObjectId) doc.getObjectId("_id");
 		h_id = (ObjectId) doc.getObjectId("H_id");
-		System.out.println("Neighbor ID: " + n_id);
-		System.out.println("House ID: " + h_id);
+		displayName = doc.getString("display_name");
 		db.disconnect();
 		
 		//store post to DB
 		db = new DatabaseConnection("standard");
 		coll = db.getDatabase().getCollection("Post");
+
 		doc = new Document();
-		doc.append("_id", n_id);
-		doc.append("h_id", n_id);
+		doc.append("N_id", n_id);
+		doc.append("H_id", h_id);
+		doc.append("display_name", displayName);
 		doc.append("type", postType);
 		doc.append("description", postInfo);
-		
+		doc.append("time_posted", Instant.now());
 		coll.insertOne(doc);
 		db.disconnect();
-	
+		
+
+	}
+	public static String[] getPosts() {
+		
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+
+
+		
+		//Get House ID, neighbor ID, display name to add to post collection
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Post");
+
+		
+
+		
+		db.disconnect();
+		return null;
 	}
 }
