@@ -177,4 +177,42 @@ public class DatabaseActions {
 		coll2.insertOne(doc2);
 		db2.disconnect();
 	}
+	
+	/**
+	 * Finds user in DB with their username and then saves a post the user made to the DB
+	 * @param username
+	 * @param postType
+	 * @param postInfo
+	 */
+	public static void savePost(String username, String postType, String postInfo) {
+		
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+		Document doc					= null;
+		ObjectId n_id					= null;
+		ObjectId h_id					= null;
+		
+		//Get House ID and neighbor ID to add to post collection
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Neighbor");
+		doc = coll.find(eq("user_name", username)).first();
+		n_id = (ObjectId) doc.getObjectId("_id");
+		h_id = (ObjectId) doc.getObjectId("H_id");
+		System.out.println("Neighbor ID: " + n_id);
+		System.out.println("House ID: " + h_id);
+		db.disconnect();
+		
+		//store post to DB
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Post");
+		doc = new Document();
+		doc.append("_id", n_id);
+		doc.append("h_id", n_id);
+		doc.append("type", postType);
+		doc.append("description", postInfo);
+		
+		coll.insertOne(doc);
+		db.disconnect();
+	
+	}
 }
