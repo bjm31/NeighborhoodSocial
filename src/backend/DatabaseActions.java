@@ -240,13 +240,14 @@ public class DatabaseActions {
 		
 
 	}
-	/*
-	 * /**
+	
+	
+	/**
 	 * create new post. Note: neighbor ID is retrieved from stored session cookie.
 	 * @param id
 	 * @param type
 	 * @param content
-	 
+	 */
 	public static void createPost(String id, String type, String content) {
 		DatabaseConnection db			= null;
 		MongoCollection<Document> coll1	= null;
@@ -260,11 +261,11 @@ public class DatabaseActions {
 		db = new DatabaseConnection("standard_user");
 		coll1 = db.getDatabase().getCollection("Post");
 		
-		// retrieve neighbor display name 
+		/* retrieve neighbor display name */
 		coll2 = db.getDatabase().getCollection("Neighbor");
 		displayName = (String) coll2.find(eq("_id", id)).first().get("display_name");
 		
-		//create and store mongo doc for new post 
+		/* create and store mongo doc for new post */
 		post = new Post(n_id, displayName, type, content);
 		post.createDocument();
 		doc = post.getPostDoc();

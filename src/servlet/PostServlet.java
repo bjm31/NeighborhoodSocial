@@ -37,6 +37,7 @@ public class PostServlet extends HttpServlet {
 		System.out.println("Post: " + post + "\npost type: " + postType);
 		
 		DatabaseActions.savePost(userName, postType, post);	
+		response.sendRedirect("home.html");
 	}
 
 
