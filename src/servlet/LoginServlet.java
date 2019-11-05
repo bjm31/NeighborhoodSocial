@@ -28,7 +28,6 @@ public class LoginServlet extends HttpServlet {
 		session = request.getSession();
 		
 		response.setContentType("text/html");
-		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		
 		String user = request.getParameter("username");
@@ -37,12 +36,8 @@ public class LoginServlet extends HttpServlet {
 		if (DatabaseActions.login(user, pass)) {
 			
 			//saves user info for the session
-<<<<<<< HEAD
-			userObj = new User(user);
-=======
 			ObjectId n_id = DatabaseActions.getN_id(user);
 			userObj = new User(user, n_id);
->>>>>>> branch 'development' of https://github.com/bjm31/NeighborhoodSocial.git
 			session.setAttribute("user", userObj);			
 			
 			RequestDispatcher rd = request.getRequestDispatcher("successfulLogin.html");	// TODO replace with eventual home page
