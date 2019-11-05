@@ -65,6 +65,4 @@ public class User {
 	public void setInviteCode(String inviteCode) {
 		this.inviteCode = inviteCode;
 	}
-
-
 }

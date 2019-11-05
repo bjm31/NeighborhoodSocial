@@ -1,16 +1,11 @@
 package backend;
 
-import com.mongodb.DBObject;
-import com.mongodb.client.FindIterable;
+//import com.mongodb.DBObject;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoIterable;
-
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import static com.mongodb.client.model.Filters.*;
 import java.time.Instant;
-import java.util.Set;
-
 
 public class DatabaseActions {
 
@@ -206,21 +201,17 @@ public class DatabaseActions {
 	 * @param postType
 	 * @param postInfo
 	 */
-	public static void savePost(String username, String postType, String postInfo) {
+	public static void savePost(ObjectId n_id, String postType, String postInfo) {
 		
 		DatabaseConnection db			= null;
 		MongoCollection<Document> coll	= null;
 		Document doc					= null;
-		ObjectId n_id					= null;
-		ObjectId h_id					= null;
 		String displayName 				= null;
 		
-		//Get House ID, neighbor ID, display name to add to post collection
+		//Get neighbor ID, display name to add to post collection
 		db = new DatabaseConnection("standard");
 		coll = db.getDatabase().getCollection("Neighbor");
-		doc = coll.find(eq("user_name", username)).first();
-		n_id = (ObjectId) doc.getObjectId("_id");
-		h_id = (ObjectId) doc.getObjectId("H_id");
+		doc = coll.find(eq("_id", n_id)).first();
 		displayName = doc.getString("display_name");
 		db.disconnect();
 		
@@ -230,47 +221,11 @@ public class DatabaseActions {
 
 		doc = new Document();
 		doc.append("N_id", n_id);
-		doc.append("H_id", h_id);
 		doc.append("display_name", displayName);
 		doc.append("type", postType);
 		doc.append("description", postInfo);
 		doc.append("time_posted", Instant.now());
 		coll.insertOne(doc);
-		db.disconnect();
-		
-
-	}
-	
-	
-	/**
-	 * create new post. Note: neighbor ID is retrieved from stored session cookie.
-	 * @param id
-	 * @param type
-	 * @param content
-	 */
-	public static void createPost(String id, String type, String content) {
-		DatabaseConnection db			= null;
-		MongoCollection<Document> coll1	= null;
-		MongoCollection<Document> coll2	= null;
-		Document doc					= null;
-		ObjectId n_id					= null;
-		String displayName				= null;
-		Post post						= null;
-		DBObject query					= null;
-		
-		db = new DatabaseConnection("standard_user");
-		coll1 = db.getDatabase().getCollection("Post");
-		
-		/* retrieve neighbor display name */
-		coll2 = db.getDatabase().getCollection("Neighbor");
-		displayName = (String) coll2.find(eq("_id", id)).first().get("display_name");
-		
-		/* create and store mongo doc for new post */
-		post = new Post(n_id, displayName, type, content);
-		post.createDocument();
-		doc = post.getPostDoc();
-		coll1.insertOne(doc);
-		
 		db.disconnect();
 	}
 }
