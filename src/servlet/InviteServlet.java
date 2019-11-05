@@ -1,14 +1,14 @@
 package servlet;
 
+import backend.DatabaseActions;
+import backend.User;
 import java.io.IOException;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import backend.DatabaseActions;
 
 /**
  * Servlet implementation class InviteServlet
@@ -31,6 +31,11 @@ public class InviteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String inviteCode = request.getParameter("inviteCode");
 		if (DatabaseActions.validInvite(inviteCode)) {
+			
+			// add user info to session
+			User user = new User(inviteCode);
+			request.getSession().setAttribute("user",  user);;
+			
 			RequestDispatcher rd = request.getRequestDispatcher("new_user.html");
 			rd.forward(request, response);
 		} else {

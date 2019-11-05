@@ -1,15 +1,15 @@
 package servlet;
 
+import backend.DatabaseActions;
+import backend.User;
+import backend._PasswordManager;
 import java.io.IOException;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import backend.DatabaseActions;
 import java.util.Arrays;
 
 /**
@@ -39,12 +39,26 @@ public class CreateAccountServlet extends HttpServlet {
 		char[] password2	= request.getParameter("password_confirm").toCharArray();
 		
 		if (!Arrays.equals(password1, password2)) {
+			
+			_PasswordManager.clear(password1);
+			_PasswordManager.clear(password2);
+			
 			RequestDispatcher rd = request.getRequestDispatcher("badPasword.html");			//TODO  update with actual HTML page
 			rd.forward(request, response);
 		}
 		
-		DatabaseActions.createNewUser("aRandomString", username, fname, lname, email, photo); //TODO fix invite code String
-		DatabaseActions.setNewPassword(username, password1);
+		else {
+			User user = (User) request.getSession().getAttribute("user");
+			String inviteCode = user.getInviteCode();
+			DatabaseActions.createNewUser(inviteCode, username, fname, lname, email, photo);
+			DatabaseActions.setNewPassword(username, password1);
+			
+			_PasswordManager.clear(password1);
+			_PasswordManager.clear(password2);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("welcomePage.html");			//TODO  update with actual HTML page
+			rd.forward(request, response);
+		}
 	}
 
 	/**
