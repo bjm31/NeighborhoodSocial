@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
 		if (DatabaseActions.login(user, pass)) {
 			
 			//saves user info for the session
-			userObj = new User(user, new String(pass));
+			userObj = new User(user);
 			session.setAttribute("user", userObj);			
 			
 			RequestDispatcher rd = request.getRequestDispatcher("successfulLogin.html");

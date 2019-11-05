@@ -7,7 +7,8 @@ public class User {
 	
 	private String user;
 
-	//private String addr;
+	//private String n_id;
+	//private String inviteCode;
 
 	public User(String user) {
 		

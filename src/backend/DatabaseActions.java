@@ -1,5 +1,7 @@
 package backend;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.CommandResult;
 import com.mongodb.DBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -9,7 +11,8 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import static com.mongodb.client.model.Filters.*;
 import java.time.Instant;
-import java.util.Set;
+import java.util.ArrayList;
+
 
 
 public class DatabaseActions {
@@ -235,12 +238,33 @@ public class DatabaseActions {
 		doc.append("type", postType);
 		doc.append("description", postInfo);
 		doc.append("time_posted", Instant.now());
+
 		coll.insertOne(doc);
 		db.disconnect();
 		
 
 	}
-	
+	public static void viewPosts() {
+		
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+		//Document doc					= null;
+		//Document doc2					= null;
+		ObjectId n_id					= null;
+		ObjectId h_id					= null;
+		String displayName 				= null;
+		
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Post");
+
+		FindIterable<Document> posts = coll.find();
+		for(Document doc : posts) {
+			System.out.println("Post: " + (doc.getString("description")));
+		}
+		
+		db.disconnect();
+		
+	}
 	
 	/**
 	 * create new post. Note: neighbor ID is retrieved from stored session cookie.
