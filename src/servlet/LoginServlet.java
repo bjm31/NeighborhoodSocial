@@ -41,13 +41,13 @@ public class LoginServlet extends HttpServlet {
 			userObj = new User(user, n_id);
 			session.setAttribute("user", userObj);			
 			
-			RequestDispatcher rd = request.getRequestDispatcher("successfulLogin.html");
+			RequestDispatcher rd = request.getRequestDispatcher("successfulLogin.html");	// TODO replace with eventual home page
 			rd.forward(request, response);
 		}
 		else {
 
 			out.print("Invalid Credentials");
-			RequestDispatcher rd = request.getRequestDispatcher("index.html");
+			RequestDispatcher rd = request.getRequestDispatcher("index.html");				// TODO replace with invalid_credentials.html
 			rd.include(request, response);
 		
 		}		
