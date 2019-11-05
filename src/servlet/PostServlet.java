@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.bson.types.ObjectId;
 
 
 /**
@@ -17,27 +18,24 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/Post")
 public class PostServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
     private String post; 
     private String postType;
-    private String userName;
     private User user;
     HttpSession session;
-    
-   
-    
+        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		response.setContentType("text/html");
 		session = request.getSession(false); //continue current session
 		user = (User) session.getAttribute("user");
-		userName = user.getUser();
+		ObjectId n_id = user.getN_id();
 		
 		postType = request.getParameter("postType");
 		post = request.getParameter("post");
 		System.out.println("Post: " + post + "\npost type: " + postType);
 		
-		DatabaseActions.savePost(userName, postType, post);	
-		DatabaseActions.viewPosts();
+		DatabaseActions.savePost(n_id, postType, post);	
 		response.sendRedirect("home.html");
 	}
 

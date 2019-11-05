@@ -9,7 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Cookie;
 import org.bson.types.ObjectId;
 import javax.servlet.http.HttpSession;
 
@@ -29,31 +28,30 @@ public class LoginServlet extends HttpServlet {
 		session = request.getSession();
 		
 		response.setContentType("text/html");
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
 		
 		String user = request.getParameter("username");
 		char[] pass = request.getParameter("password").toCharArray();
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
-
- 
+		
 		if (DatabaseActions.login(user, pass)) {
 			
 			//saves user info for the session
+<<<<<<< HEAD
 			userObj = new User(user);
+=======
+			ObjectId n_id = DatabaseActions.getN_id(user);
+			userObj = new User(user, n_id);
+>>>>>>> branch 'development' of https://github.com/bjm31/NeighborhoodSocial.git
 			session.setAttribute("user", userObj);			
 			
-			RequestDispatcher rd = request.getRequestDispatcher("successfulLogin.html");
-			ObjectId n_id = DatabaseActions.getN_id(user);
-			Cookie cookie = new Cookie("sessionCookie", n_id.toString());
-			cookie.setComment("This cookie stores the system userid");
-			cookie.setHttpOnly(true);
-			response.addCookie(cookie);
+			RequestDispatcher rd = request.getRequestDispatcher("successfulLogin.html");	// TODO replace with eventual home page
 			rd.forward(request, response);
 		}
 		else {
 
 			out.print("Invalid Credentials");
-			RequestDispatcher rd = request.getRequestDispatcher("index.html");
+			RequestDispatcher rd = request.getRequestDispatcher("index.html");				// TODO replace with invalid_credentials.html
 			rd.include(request, response);
 		
 		}		

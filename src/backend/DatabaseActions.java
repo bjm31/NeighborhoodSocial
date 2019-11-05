@@ -11,9 +11,6 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import static com.mongodb.client.model.Filters.*;
 import java.time.Instant;
-import java.util.ArrayList;
-
-
 
 public class DatabaseActions {
 
@@ -209,21 +206,17 @@ public class DatabaseActions {
 	 * @param postType
 	 * @param postInfo
 	 */
-	public static void savePost(String username, String postType, String postInfo) {
+	public static void savePost(ObjectId n_id, String postType, String postInfo) {
 		
 		DatabaseConnection db			= null;
 		MongoCollection<Document> coll	= null;
 		Document doc					= null;
-		ObjectId n_id					= null;
-		ObjectId h_id					= null;
 		String displayName 				= null;
 		
-		//Get House ID, neighbor ID, display name to add to post collection
+		//Get neighbor ID, display name to add to post collection
 		db = new DatabaseConnection("standard");
 		coll = db.getDatabase().getCollection("Neighbor");
-		doc = coll.find(eq("user_name", username)).first();
-		n_id = (ObjectId) doc.getObjectId("_id");
-		h_id = (ObjectId) doc.getObjectId("H_id");
+		doc = coll.find(eq("_id", n_id)).first();
 		displayName = doc.getString("display_name");
 		db.disconnect();
 		
@@ -233,7 +226,6 @@ public class DatabaseActions {
 
 		doc = new Document();
 		doc.append("N_id", n_id);
-		doc.append("H_id", h_id);
 		doc.append("display_name", displayName);
 		doc.append("type", postType);
 		doc.append("description", postInfo);

@@ -1,22 +1,22 @@
 package servlet;
 
+import backend.DatabaseActions;
+import backend.User;
+import backend._PasswordManager;
 import java.io.IOException;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Cookie;
-
-import backend.DatabaseActions;
 import java.util.Arrays;
 
 /**
  * Servlet implementation class CreateAccountServlet
  */
-@WebServlet("/CreateAccount")
+@WebServlet(urlPatterns = "/CreateAccount", initParams = @WebInitParam(name = "location", value = "$UPLOAD"))
 public class CreateAccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -38,25 +38,28 @@ public class CreateAccountServlet extends HttpServlet {
 		String photo		= request.getParameter("photo");
 		char[] password1	= request.getParameter("password").toCharArray();
 		char[] password2	= request.getParameter("password_confirm").toCharArray();
-		Cookie[] cookies	= null;
-		Cookie cookie		= null;
 		
 		if (!Arrays.equals(password1, password2)) {
+			
+			_PasswordManager.clear(password1);
+			_PasswordManager.clear(password2);
+			
 			RequestDispatcher rd = request.getRequestDispatcher("badPasword.html");			//TODO  update with actual HTML page
 			rd.forward(request, response);
 		}
+		
 		else {
-		
-			cookies = request.getCookies();
-			for (Cookie c : cookies) {
-				if (c.getName().equalsIgnoreCase("inviteCodeCookie")) {
-					cookie = c;
-				}
-			}
-		
-			DatabaseActions.createNewUser(cookie.getValue(), username, fname, lname, email, photo);
+			User user = (User) request.getSession().getAttribute("user");
+			String inviteCode = user.getInviteCode();
+			DatabaseActions.createNewUser(inviteCode, username, fname, lname, email, photo);
 			DatabaseActions.setNewPassword(username, password1);
-			}
+			
+			_PasswordManager.clear(password1);
+			_PasswordManager.clear(password2);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("welcomePage.html");			//TODO  update with actual HTML page
+			rd.forward(request, response);
+		}
 	}
 
 	/**
