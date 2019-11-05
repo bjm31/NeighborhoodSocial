@@ -6,6 +6,7 @@ import backend._PasswordManager;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ import java.util.Arrays;
 /**
  * Servlet implementation class CreateAccountServlet
  */
-@WebServlet("/CreateAccount")
+@WebServlet(urlPatterns = "/CreateAccount", initParams = @WebInitParam(name = "location", value = "$UPLOAD"))
 public class CreateAccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
