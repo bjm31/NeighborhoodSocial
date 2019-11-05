@@ -10,6 +10,9 @@ import com.mongodb.client.MongoIterable;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import static com.mongodb.client.model.Filters.*;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 
 public class DatabaseActions {
@@ -236,26 +239,49 @@ public class DatabaseActions {
 		
 
 	}
-	public static void viewPosts() {
+	public static String[] viewPosts() {
 		
 		DatabaseConnection db			= null;
 		MongoCollection<Document> coll	= null;
-		//Document doc					= null;
-		//Document doc2					= null;
-		ObjectId n_id					= null;
-		ObjectId h_id					= null;
-		String displayName 				= null;
+		String[] dbPosts				= null;
+		String postFormat				= null;
+		StringBuilder sb				= null;
+		DateFormat dateString			= null;
+		int postNum = 0;
+		int i = 0;
 		
+		dateString = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 		db = new DatabaseConnection("standard");
 		coll = db.getDatabase().getCollection("Post");
 
 		FindIterable<Document> posts = coll.find();
+		
+		//makes array with size of number of posts
+		postNum = (int) db.getDatabase().getCollection("Post").countDocuments();
+		dbPosts = new String[postNum];
+		
+		
 		for(Document doc : posts) {
-			System.out.println("Post: " + (doc.getString("description")));
+			
+			//Make post string break in certain places, so it is not too long on the page
+			postFormat = doc.getString("description");
+			sb = new StringBuilder(postFormat);
+			
+			for(int j = 70; j < postFormat.length(); j += 70) {
+				
+				sb.insert(j, "</br>");
+			}
+			
+			//Creates String to fill post array
+			dbPosts[i] = "<b><p>" + doc.getString("display_name") 
+						+ " at " +  dateString.format(doc.getDate("time_posted"))
+					    + "</b></p><p>" + sb + "</p>";
+						 
+			i++;
 		}
 		
 		db.disconnect();
-		
+		return dbPosts;
 	}
 	
 	/**
