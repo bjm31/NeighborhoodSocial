@@ -34,7 +34,7 @@ public class HomeServlet extends HttpServlet {
 				+ "<title>View Posts</title>"
 				+ "<style>"
 				+ "#postList {text-align : center;"
-				+ "			  padding-top: 8%;}"
+				+ "			  padding-top: 11%;}"
 				+ "#post {width : 40%;"
 				+ "		  text-align : left;"
 				+ "		  border-style : solid;}"
@@ -47,7 +47,8 @@ public class HomeServlet extends HttpServlet {
 				+ "</style>"
 				+ "</head>"
 				+ "<body>"
-				+ "<h1 style=\"text-padding:center;\"><u>Neighbors' Posts:</u></h1>"
+				+ "<h1 style=\"text-padding:center;\"><u>Neighborhood Social</u></h1>"
+				+ "</br>"
 				+ "<div id=\"buttons\">"
 				+ "<form action=\"MakePost.html\" method=\"GET\" id=\"button\">"
 				+ "<input type=\"submit\" value=\"Make Post\"/>"
@@ -58,15 +59,18 @@ public class HomeServlet extends HttpServlet {
 				+ "<form action=\"\" method=\"GET\" id=\"button\">"   //add action
 				+ "<input type=\"submit\" value=\"View Neighbors\"/>"
 				+ "</form>"
-				+ "<form action=\"\" method=\"GET\" id=\"filter\">"   //add action
+				+ "<form action=\"\" method=\"GET\" id=\"button\">"   //add action
+				+ "<input type=\"submit\" value=\"Logout\"/>"
 				+ "</form>"
+				+ "<h2 style=\"text-padding:center;\">Neighbors' Posts:</h2>"
+				+ "<form action=\"\" method=\"GET\" id=\"filter\">"   //add action
 				+ "Filter by: <select name=\"postType\">\n" + 
 				"				<option value=\"\">Post type</option>\n" + 
 				"				<option value=\"For Sale\">For Sale</option>\n" + 
 				"				<option value=\"Help Wanted\">Help Wanted</option>\n" + 
 				"				<option value=\"Events\">Events</option>\n" + 
 				"			</select>"
-				
+				+ "</form>"				
 				+ "</div>"
 				+ "<div id=\"postList\">");
 		
