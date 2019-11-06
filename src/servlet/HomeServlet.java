@@ -59,17 +59,17 @@ public class HomeServlet extends HttpServlet {
 				+ "<form action=\"\" method=\"GET\" id=\"button\">"   //add action
 				+ "<input type=\"submit\" value=\"View Neighbors\"/>"
 				+ "</form>"
-				+ "<form action=\"\" method=\"GET\" id=\"button\">"   //add action
+				+ "<form action=\"Logout\" method=\"GET\" id=\"button\" class=\"servlet.Logout\">"   //add action
 				+ "<input type=\"submit\" value=\"Logout\"/>"
 				+ "</form>"
 				+ "<h2 style=\"text-padding:center;\">Neighbors' Posts:</h2>"
 				+ "<form action=\"\" method=\"GET\" id=\"filter\">"   //add action
-				+ "Filter by: <select name=\"postType\">\n" + 
-				"				<option value=\"\">Post type</option>\n" + 
-				"				<option value=\"For Sale\">For Sale</option>\n" + 
-				"				<option value=\"Help Wanted\">Help Wanted</option>\n" + 
-				"				<option value=\"Events\">Events</option>\n" + 
-				"			</select>"
+				+ "Filter by: <select name=\"postType\">\n" 
+				+ "				<option value=\"\">Post type</option>\n"  
+				+ "				<option value=\"For Sale\">For Sale</option>\n" 
+				+ "				<option value=\"Help Wanted\">Help Wanted</option>\n"
+				+ "				<option value=\"Events\">Events</option>\n"
+				+ "			 </select>"
 				+ "</form>"				
 				+ "</div>"
 				+ "<div id=\"postList\">");
