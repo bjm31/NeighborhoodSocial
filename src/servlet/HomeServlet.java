@@ -26,11 +26,12 @@ public class HomeServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		String doctype = "<!doctype html public \"-//w3c//dtd html 4.0 " + "transitional//en\">\n";
 		String displayName = "";
-		
-		
+		String filterType = request.getParameter("filterType");
+
 		//HTML output to page
 		out.println(doctype + "<html>"
 				+ "<head>"
+				+ "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js\"></script>"
 				+ "<title>View Posts</title>"
 				+ "<style>"
 				+ "#postList {text-align : center;"
@@ -62,16 +63,54 @@ public class HomeServlet extends HttpServlet {
 				+ "<form action=\"Logout\" method=\"GET\" id=\"button\" class=\"servlet.Logout\">"   //add action
 				+ "<input type=\"submit\" value=\"Logout\"/>"
 				+ "</form>"
-				+ "<h2 style=\"text-padding:center;\">Neighbors' Posts:</h2>"
-				+ "<form action=\"\" method=\"GET\" id=\"filter\">"   //add action
-				+ "Filter by: <select name=\"postType\">\n" 
-				+ "				<option value=\"\">Post type</option>\n"  
+				+ "<h2 style=\"text-padding:center;\">Neighbors' Posts:</h2>");
+		if(filterType == null || filterType.compareTo("") == 0) {
+			
+			out.print("<form action=\"Home\" method=\"GET\" id=\"filter\" class=\"servlet.Home\" onchange=\"$('#filter').submit();\">"
+				+ "Filter by: <select name=\"filterType\">\n" 
+				+ "				<option value=\"\">View All</option>\n"  
 				+ "				<option value=\"For Sale\">For Sale</option>\n" 
 				+ "				<option value=\"Help Wanted\">Help Wanted</option>\n"
 				+ "				<option value=\"Events\">Events</option>\n"
 				+ "			 </select>"
-				+ "</form>"				
-				+ "</div>"
+				+ "</form>"	);
+		}
+		
+		if(filterType != null && filterType.compareTo("For Sale") == 0) {		
+
+			out.print("<form action=\"Home\" method=\"GET\" id=\"filter\" class=\"servlet.Home\" onchange=\"$('#filter').submit();\">"
+				+ "Filter by: <select name=\"filterType\">\n"
+				+ "				<option value=\"For Sale\">For Sale</option>\n" 
+				+ "				<option value=\"Help Wanted\">Help Wanted</option>\n"
+				+ "				<option value=\"Events\">Events</option>\n"
+				+ "				<option value=\"\">View All</option>\n"  
+				+ "			 </select>"
+				+ "</form>"	);
+		}
+		
+		if(filterType != null && filterType.compareTo("Help Wanted") == 0) {
+			
+			out.print("<form action=\"Home\" method=\"GET\" id=\"filter\" class=\"servlet.Home\" onchange=\"$('#filter').submit();\">"
+				+ "Filter by: <select name=\"filterType\">\n" 
+				+ "				<option value=\"Help Wanted\">Help Wanted</option>\n"
+				+ "				<option value=\"For Sale\">For Sale</option>\n" 
+				+ "				<option value=\"Events\">Events</option>\n"
+				+ "				<option value=\"\">View All</option>\n"
+				+ "			 </select>"
+				+ "</form>"	);
+		}
+		
+		if(filterType != null && filterType.compareTo("Events") == 0) {		
+			out.print("<form action=\"Home\" method=\"GET\" id=\"filter\" class=\"servlet.Home\" onchange=\"$('#filter').submit();\">"
+				+ "Filter by: <select name=\"filterType\">\n" 
+				+ "				<option value=\"Events\">Events</option>\n"
+				+ "				<option value=\"For Sale\">For Sale</option>\n" 
+				+ "				<option value=\"Help Wanted\">Help Wanted</option>\n"
+				+ "				<option value=\"\">View All</option>\n"
+				+ "			 </select>"
+				+ "</form>"	);
+		}
+				out.println("</div>"
 				+ "<div id=\"postList\">");
 		
 		//Read string array full of posts
@@ -92,7 +131,8 @@ public class HomeServlet extends HttpServlet {
 					+ "</form>"
 					+ "</body>"
 					+ "</html>");
-		
+			
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
