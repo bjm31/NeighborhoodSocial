@@ -273,9 +273,10 @@ public class DatabaseActions {
 			}
 			
 			//Creates String to fill post array
-			dbPosts[i] = "<b><p>" + doc.getString("display_name") 
-						+ " at " +  dateString.format(doc.getDate("time_posted"))
-					    + "</b></p><p>" + sb + "</p>";
+			dbPosts[i] = "<b><p>\n" + doc.getString("display_name") 
+						+ "\n at " +  dateString.format(doc.getDate("time_posted")) + "</b></p>"
+						+ "<p><b>Type: [" + doc.getString("type") + "]</b></p></br>"
+						+ "<p>" + sb + "</p>";
 						 
 			i++;
 		}
