@@ -27,7 +27,7 @@ public class HomeServlet extends HttpServlet {
 		String doctype = "<!doctype html public \"-//w3c//dtd html 4.0 " + "transitional//en\">\n";
 		String displayName = "";
 		String filterType = request.getParameter("filterType");
-
+		String postType = "";
 		//HTML output to page
 		out.println(doctype + "<html>"
 				+ "<head>"
@@ -64,6 +64,7 @@ public class HomeServlet extends HttpServlet {
 				+ "<input type=\"submit\" value=\"Logout\"/>"
 				+ "</form>"
 				+ "<h2 style=\"text-padding:center;\">Neighbors' Posts:</h2>");
+		
 		if(filterType == null || filterType.compareTo("") == 0) {
 			
 			out.print("<form action=\"Home\" method=\"GET\" id=\"filter\" class=\"servlet.Home\" onchange=\"$('#filter').submit();\">"
@@ -101,6 +102,7 @@ public class HomeServlet extends HttpServlet {
 		}
 		
 		if(filterType != null && filterType.compareTo("Events") == 0) {		
+			
 			out.print("<form action=\"Home\" method=\"GET\" id=\"filter\" class=\"servlet.Home\" onchange=\"$('#filter').submit();\">"
 				+ "Filter by: <select name=\"filterType\">\n" 
 				+ "				<option value=\"Events\">Events</option>\n"
@@ -112,20 +114,49 @@ public class HomeServlet extends HttpServlet {
 		}
 				out.println("</div>"
 				+ "<div id=\"postList\">");
+				
 		
 		//Read string array full of posts
+		//Display posts according to filter type
 		for( int i = 0; i < posts.length; i++) {
+						
+			String tokens[] = posts[i].split("\n");
 			
-			displayName = "";
+			displayName = tokens[1];
+			postType = tokens[5];
 			
-			//TODO: parse post[i] to get username
-			//link display name with user profile
-			//get picture
-			
-			out.println("<div id=\"post\">" + posts[i] + ""
-					+ "<a href=\" \">Reply</a>"
-					+ "</div></br></br></br>");
+			if(filterType == null || filterType.compareTo("") == 0) {  //show all posts
 
+				out.println("<div id=\"post\">" + posts[i] + ""
+						+ "<a href=\" \">Reply</a>"
+						+ "</div></br></br></br>");
+			}
+			if(filterType != null && filterType.compareTo("For Sale") == 0) {  //show For Sale posts
+				
+				if(postType.compareTo(filterType) == 0) {
+					out.println("<div id=\"post\">" + posts[i] + ""
+							+ "<a href=\" \">Reply</a>"
+							+ "</div></br></br></br>");
+				}
+			}
+			if(filterType != null && filterType.compareTo("Help Wanted") == 0) {  //show Help Wanted posts
+				
+				if(postType.compareTo(filterType) == 0) {
+					out.println("<div id=\"post\">" + posts[i] + ""
+							+ "<a href=\" \">Reply</a>"
+							+ "</div></br></br></br>");
+				}
+			}
+			if(filterType != null && filterType.compareTo("Events") == 0) {  //show Events posts
+				
+				if(postType.compareTo(filterType) == 0) {
+					out.println("<div id=\"post\">" + posts[i] + ""
+							+ "<a href=\" \">Reply</a>"
+							+ "</div></br></br></br>");
+				}
+			}
+
+			
 		}
 			out.println("</div>"
 					+ "</form>"

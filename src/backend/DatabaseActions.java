@@ -265,18 +265,19 @@ public class DatabaseActions {
 			
 			//Make post string break in certain places, so it is not too long on the page
 			postFormat = doc.getString("description");
+			
 			sb = new StringBuilder(postFormat);
 			
 			for(int j = 70; j < postFormat.length(); j += 70) {
 				
-				sb.insert(j, "</br>");
+				sb.insert(j, "-</br>");
 			}
 			
 			//Creates String to fill post array
 			dbPosts[i] = "<b><p>\n" + doc.getString("display_name") 
-						+ "\n at " +  dateString.format(doc.getDate("time_posted")) + "</b></p>"
-						+ "<p><b>Type: [" + doc.getString("type") + "]</b></p></br>"
-						+ "<p>" + sb + "</p>";
+						+ "\n at \n" +  dateString.format(doc.getDate("time_posted")) + "\n</b></p>"
+						+ "<p><b>Type: [\n" + doc.getString("type") + "\n]</b></p></br>"
+						+ "<p>\n" + sb + "\n</p>";
 						 
 			i++;
 		}
