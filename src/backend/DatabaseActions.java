@@ -285,36 +285,20 @@ public class DatabaseActions {
 		db.disconnect();
 		return dbPosts;
 	}
+
 	
-	/**
-	 * create new post. Note: neighbor ID is retrieved from stored session cookie.
-	 * @param id
-	 * @param type
-	 * @param content
-	 */
-	public static void createPost(String id, String type, String content) {
+	public static boolean doesUsernameExist(String username) {
 		DatabaseConnection db			= null;
-		MongoCollection<Document> coll1	= null;
-		MongoCollection<Document> coll2	= null;
+		MongoCollection<Document> coll	= null;
 		Document doc					= null;
-		ObjectId n_id					= null;
-		String displayName				= null;
-		Post post						= null;
-//		DBObject query					= null;
+		boolean exists = false;
 		
-		db = new DatabaseConnection("standard_user");
-		coll1 = db.getDatabase().getCollection("Post");
-		
-		/* retrieve neighbor display name */
-		coll2 = db.getDatabase().getCollection("Neighbor");
-		displayName = (String) coll2.find(eq("_id", id)).first().get("display_name");
-		
-		/* create and store mongo doc for new post */
-		post = new Post(n_id, displayName, type, content);
-		post.createDocument();
-		doc = post.getPostDoc();
-		coll1.insertOne(doc);
-		
-		db.disconnect();
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Neighbor");
+		doc = coll.find(eq("user_name", username)).first();
+		if (!(doc == null)) {
+			exists = true;
+		}
+		return exists;
 	}
 }
