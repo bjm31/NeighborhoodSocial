@@ -33,7 +33,7 @@ public class CreateAccountServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String username 	= request.getParameter("username");
+		String username 	= request.getParameter("username").toLowerCase();
 		String fname		= request.getParameter("fname");
 		String lname		= request.getParameter("lname");
 		String email		= request.getParameter("email");

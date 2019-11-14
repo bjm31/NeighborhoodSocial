@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		
-		String user = request.getParameter("username");
+		String user = request.getParameter("username").toLowerCase();
 		char[] pass = request.getParameter("password").toCharArray();
 		
 		if (DatabaseActions.login(user, pass)) {
