@@ -1,11 +1,11 @@
 package backend;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.CommandResult;
-import com.mongodb.DBObject;
+//import com.mongodb.BasicDBObject;
+//import com.mongodb.CommandResult;
+//import com.mongodb.DBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoIterable;
+//import com.mongodb.client.MongoIterable;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -300,7 +300,7 @@ public class DatabaseActions {
 		ObjectId n_id					= null;
 		String displayName				= null;
 		Post post						= null;
-		DBObject query					= null;
+//		DBObject query					= null;
 		
 		db = new DatabaseConnection("standard_user");
 		coll1 = db.getDatabase().getCollection("Post");

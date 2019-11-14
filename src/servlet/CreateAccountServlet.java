@@ -57,7 +57,7 @@ public class CreateAccountServlet extends HttpServlet {
 			_PasswordManager.clear(password1);
 			_PasswordManager.clear(password2);
 			
-			RequestDispatcher rd = request.getRequestDispatcher("welcomePage.html");			//TODO  update with actual HTML page
+			RequestDispatcher rd = request.getRequestDispatcher("/Home");			//TODO  update with actual HTML page
 			rd.forward(request, response);
 		}
 	}
