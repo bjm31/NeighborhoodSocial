@@ -28,7 +28,8 @@ public class HomeServlet extends HttpServlet {
 		String displayName = "";
 		String filterType = request.getParameter("filterType");
 		String postType = "";
-		//HTML output to page
+
+		//HTML output
 		out.println(doctype + "<html>"
 				+ "<head>"
 				+ "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js\"></script>"
@@ -39,7 +40,7 @@ public class HomeServlet extends HttpServlet {
 				+ "#post {width : 40%;"
 				+ "		  text-align : left;"
 				+ "		  border-style : solid;}"
-				+ "#buttons{float: left;"
+				+ "#buttons{float : left;"
 				+ "			width : 50%;"
 				+ "			margin: 5px;}"
 				+ "#button{display: inline-block;"
@@ -48,7 +49,7 @@ public class HomeServlet extends HttpServlet {
 				+ "</style>"
 				+ "</head>"
 				+ "<body>"
-				+ "<h1 style=\"text-padding:center;\"><u>Neighborhood Social</u></h1>"
+				+ "<h1><u>Neighborhood Social</u></h1>"
 				+ "</br>"
 				+ "<div id=\"buttons\">"
 				+ "<form action=\"MakePost.html\" method=\"GET\" id=\"button\">"
@@ -118,7 +119,9 @@ public class HomeServlet extends HttpServlet {
 		
 		//Read string array full of posts
 		//Display posts according to filter type
-		for( int i = 0; i < posts.length; i++) {
+		
+				
+		for( int i = posts.length - 1; i >= 0; i--) {
 						
 			String tokens[] = posts[i].split("\n");
 			
