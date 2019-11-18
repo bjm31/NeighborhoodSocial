@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Create Post</title>
+</head>
+<body>
+	<!--Other stuff in Make Post page -->
+	<div>
+		<form action="Post" method="post" class="servlet.Post">
+			<select required name="postType">
+				<option value="">Select Post Type</option>
+				<option value="For Sale">For Sale</option>
+				<option value="Help Wanted">Help Wanted</option>
+				<option value="Events">Events</option>
+			</select>
+			<textarea rows="25" cols="50" required placeholder="Enter text."
+				name="post"></textarea>
+			<input type="submit" value="Submit" />
+		</form>
+		<form action="Home" method="GET" class="servlet.Home">
+			<input type="submit" value="Go Back" />
+		</form>
+	</div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="stylesheet"  href="style.css" />
+	<title>New Neighbor Creation</title>
+	<body>
+		<div class="ns_title">
+		<h1>Neighborhood Social</h1>
+		<hr class="title_line">
+	</div>
+	<div class="ns_input">
+		<h3 class="greeting">Please include the following information</h3>
+		<form action="CreateAccount" method="post" class="servlet.CreateAccount">
+		<span class="ns_label">Username:</span><input type="text" class="text_field" name="username"><br>
+		<span class="ns_label">Password:</span><input type="password" class="text_field" name="password"><br>
+		<span class="ns_label">Confirm Password:</span><input type="password" class="text_field" name="password_confirm"><br>
+		<span class="ns_label">First name:</span> <input type="text" class="text_field" name="fname"><br>
+		<span class="ns_label">Last name:</span> <input type="text" class="text_field" name="lname"><br>
+		<span class="ns_label">E-mail:</span> <input type="text" class="text_field" name="email"><br>
+		<span class="ns_label">Photo:</span> <input type="file" class="file_field" name="photo"><br>
+		<input type="button" onclick="location.href='index.html';" class="ns_cancel" name="cancel_button" value="cancel">
+		<input type="submit" class="ns_submit" name="login_input" value="Join Neighborhood">
+		</form>
+	</div>
+	
+	</body>
+</head>
+
+</html>
