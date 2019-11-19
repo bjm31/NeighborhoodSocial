@@ -28,19 +28,21 @@ public class ViewProfile extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-		
+		//Get user session
 		session = request.getSession(false);
 		userObj = (User) session.getAttribute("user");
 		response.setContentType("text/html");
 		out = response.getWriter();
 		
+		//make call to get user info to fill profile page
 		String profileInfo[] = DatabaseActions.getProfile(userObj.getN_id());
+		
 		String doctype = "<!doctype html public \"-//w3c//dtd html 4.0 " + "transitional//en\">\n";
 		
 		out.println(doctype + "<html>"
 				+ "<head>"
-				+ "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js\"></script>"
-				+ "<title>View Profile</title>"
+				//+ "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js\"></script>"
+				+ "<title>Profile page</title>"
 				+ "</style>"
 				+ "</head>"
 				+ "<body>");

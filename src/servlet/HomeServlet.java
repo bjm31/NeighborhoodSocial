@@ -55,7 +55,7 @@ public class HomeServlet extends HttpServlet {
 				+ "<form action=\"MakePost.html\" method=\"GET\" id=\"button\">"
 				+ "<input type=\"submit\" value=\"Make Post\"/>"
 				+ "</form>"
-				+ "<form action=\"ViewProfile\" method=\"GET\" id=\"button\" class=\"servlet.ViewProfile\">"   //add action
+				+ "<form action=\"ViewProfile\" method=\"GET\" id=\"button\" class=\"servlet.ViewProfile\">"
 				+ "<input type=\"submit\" value=\"View Profile\">"
 				+ "</form>"
 				+ "<form action=\"\" method=\"GET\" id=\"button\">"   //add action
