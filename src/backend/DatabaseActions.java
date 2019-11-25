@@ -301,4 +301,34 @@ public class DatabaseActions {
 		}
 		return exists;
 	}
+	
+	public static String[] getProfile(ObjectId n_id) {
+		
+		
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+		Document doc					= null;		
+		int numAttributes				= 6;	//Number of keys taken from Neighbor cluster
+		String profileInfo[];
+		
+		//Connect to DB and find specific user
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Neighbor");
+		doc = coll.find(eq("_id", n_id)).first();
+		
+		profileInfo = new String[numAttributes];
+		
+		//Add all needed user info into a string array
+		profileInfo[0] = "Name: " + doc.getString("display_name");
+		profileInfo[1] = "Email: " + doc.getString("email");
+		profileInfo[2] = doc.getString("photo");
+		profileInfo[3] = "Reward Points: " + String.valueOf(doc.getInteger("reward_pts"));
+		profileInfo[4] = String.valueOf(doc.getBoolean("local_agent"));
+		profileInfo[5] = "Last Online: " + String.valueOf(doc.getDate("last_login"));
+		
+		
+		db.disconnect();
+		return profileInfo;
+		
+	}
 }
