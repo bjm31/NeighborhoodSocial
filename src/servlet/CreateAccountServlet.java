@@ -14,7 +14,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.io.IOUtils;
+import org.bson.types.ObjectId;
+
 import java.util.Arrays;
 
 /**
@@ -73,10 +77,26 @@ public class CreateAccountServlet extends HttpServlet {
 		}
 		
 		if (goodPassword && goodUsername) {
+			
+			HttpSession session = request.getSession();
+			
 			User user = (User) request.getSession().getAttribute("user");
+			
+			
+			
+			
 			String inviteCode = user.getInviteCode();
 			DatabaseActions.createNewUser(inviteCode, username, fname, lname, email, photo, buffer);
 			DatabaseActions.setNewPassword(username, password1);
+			
+			ObjectId n_id = DatabaseActions.getN_id(username);
+			user.setN_id(n_id);
+
+			session.setAttribute("user", user);
+			System.out.println("username: " + user.getUser());
+			System.out.println("id: " + user.getN_id());
+
+			
 			
 			_PasswordManager.clear(password1);
 			_PasswordManager.clear(password2);

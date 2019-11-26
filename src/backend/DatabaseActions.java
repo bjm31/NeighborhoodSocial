@@ -318,6 +318,7 @@ public class DatabaseActions {
 		profileInfo = new String[numAttributes];
 		
 		//Add all needed user info into a string array
+
 		profileInfo[0] = "Name: " + doc.getString("display_name");
 		profileInfo[1] = "Email: " + doc.getString("email");
 		profileInfo[2] = doc.getString("photo");
