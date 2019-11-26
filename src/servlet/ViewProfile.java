@@ -1,8 +1,9 @@
 package servlet;
 
+
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import java.util.Base64;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,16 +37,20 @@ public class ViewProfile extends HttpServlet {
 		
 		//make call to get user info to fill profile page
 		String profileInfo[] = DatabaseActions.getProfile(userObj.getN_id());
+		byte[] picture = DatabaseActions.getPicture(userObj.getN_id());
+
+		byte[] encoded = Base64.getEncoder().encode(picture);
+		
 		
 		String doctype = "<!doctype html public \"-//w3c//dtd html 4.0 " + "transitional//en\">\n";
 		
 		out.println(doctype + "<html>"
 				+ "<head>"
-				//+ "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js\"></script>"
 				+ "<title>Profile page</title>"
 				+ "</style>"
 				+ "</head>"
-				+ "<body>");
+				+ "<body>"
+				+ "<img src =\"data:image/jpg;base64," + new String(encoded) +"\" alt=\"Image Not Found\"></br>");
 		
 		for(int i = 0; i < profileInfo.length; i++) {
 			

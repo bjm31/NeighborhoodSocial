@@ -10,7 +10,6 @@ public class User {
 	private String user;
 	private ObjectId n_id;
 	private String inviteCode;
-	
 
 
 	//private String n_id;
