@@ -1,5 +1,6 @@
 package backend;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
@@ -345,7 +346,25 @@ public class DatabaseActions {
 		byte[] fileData = data.getData();
 		
 
-		
+		db.disconnect();
 		return fileData;
+	}
+	public static void setPicture(ObjectId n_id, byte[] file) {
+		
+		
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+		Document doc					= null;	
+		
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Neighbor");
+		doc = coll.find(eq("_id", n_id)).first();
+		
+		BasicDBObject newDoc = new BasicDBObject();
+		newDoc.append("$set",  new BasicDBObject().append("fileData", file));
+		
+		
+		coll.updateOne(doc, newDoc);
+		db.disconnect();
 	}
 }

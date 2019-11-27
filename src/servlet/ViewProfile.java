@@ -50,7 +50,11 @@ public class ViewProfile extends HttpServlet {
 				+ "</style>"
 				+ "</head>"
 				+ "<body>"
-				+ "<img src =\"data:image/jpg;base64," + new String(encoded) +"\" alt=\"Image Not Found\"></br>");
+				+ "<img src =\"data:image/jpg;base64," + new String(encoded) +"\" alt=\"Image Not Found\"></br>"
+				+ "<form action=\"UpdatePic\" method=\"POST\" enctype=\"multipart/form-data\">"
+				+ "<input type=\"file\" class=\"file_field\" name=\"photo\" required>"
+				+ "<input type=\"submit\" value=\"Change Picture\">"
+				+ "</form>");
 		
 		for(int i = 0; i < profileInfo.length; i++) {
 			
