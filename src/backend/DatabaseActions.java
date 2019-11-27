@@ -351,7 +351,6 @@ public class DatabaseActions {
 	}
 	public static void setPicture(ObjectId n_id, byte[] file) {
 		
-		
 		DatabaseConnection db			= null;
 		MongoCollection<Document> coll	= null;
 		Document doc					= null;	
@@ -366,5 +365,55 @@ public class DatabaseActions {
 		
 		coll.updateOne(doc, newDoc);
 		db.disconnect();
+	}
+	//returns list of Neighbor Ids
+	public static ObjectId[] getNeighborList() {
+		
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+		Document doc					= null;	
+		int num;
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Neighbor");
+		
+		FindIterable<Document> list = coll.find();
+		
+		//makes array with size of number of posts
+		num = (int) db.getDatabase().getCollection("Neighbor").countDocuments();
+		ObjectId[] n_ids = new ObjectId[num];
+		int i = 0;
+		for(Document d : list) {
+			
+			n_ids[i] = d.getObjectId("_id");
+			i++;
+		}
+		
+		
+		return n_ids; 
+	}
+	
+	public static String[] getAllNames() {
+		
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+		Document doc					= null;	
+		int num;
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Neighbor");
+		
+		FindIterable<Document> list = coll.find();
+		
+		//makes array with size of number of posts
+		num = (int) db.getDatabase().getCollection("Neighbor").countDocuments();
+		String[] names = new String[num];
+		int i = 0;
+		for(Document d : list) {
+			
+			names[i] = d.getString("display_name");
+			i++;
+		}
+		
+		
+		return names;
 	}
 }

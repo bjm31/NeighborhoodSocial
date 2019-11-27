@@ -57,10 +57,10 @@ public class HomeServlet extends HttpServlet {
 				+ "<form action=\"ViewProfile\" method=\"GET\" id=\"button\" class=\"servlet.ViewProfileServlet\">"
 				+ "<input type=\"submit\" value=\"View Profile\">"
 				+ "</form>"
-				+ "<form action=\"\" method=\"GET\" id=\"button\">"   //add action
+				+ "<form action=\"NeighborList\" method=\"GET\" id=\"button\">"
 				+ "<input type=\"submit\" value=\"View Neighbors\">"
 				+ "</form>"
-				+ "<form action=\"Logout\" method=\"GET\" id=\"button\" class=\"servlet.Logout\">"   //add action
+				+ "<form action=\"Logout\" method=\"GET\" id=\"button\" class=\"servlet.Logout\">"   
 				+ "<input type=\"submit\" value=\"Logout\">"
 				+ "</form>"
 				+ "<h2 style=\"text-padding:center;\">Neighbors' Posts:</h2>");
