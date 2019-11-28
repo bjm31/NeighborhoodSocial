@@ -274,7 +274,8 @@ public class DatabaseActions {
 			}
 			
 			//Creates String to fill post array
-			dbPosts[i] = "<b><p>\n" + doc.getString("display_name") 
+			dbPosts[i] = "<p hidden>" + doc.getObjectId("N_id") + "</p>"
+					    + "<b><p>\n" + doc.getString("display_name") 
 						+ "\n at \n" +  dateString.format(doc.getDate("time_posted")) + "\n</b></p>"
 						+ "<p><b>Type: [\n" + doc.getString("type") + "\n]</b></p></br>"
 						+ "<p>\n" + sb + "\n</p>";
@@ -320,12 +321,12 @@ public class DatabaseActions {
 		
 		//Add all needed user info into a string array
 
-		profileInfo[0] = "Name: " + doc.getString("display_name");
-		profileInfo[1] = "Email: " + doc.getString("email");
+		profileInfo[0] = "<b>Name: </b>" + doc.getString("display_name");
+		profileInfo[1] = "<b>Email: </b>" + doc.getString("email");
 		profileInfo[2] = doc.getString("photo");
-		profileInfo[3] = "Reward Points: " + String.valueOf(doc.getInteger("reward_pts"));
-		profileInfo[4] = String.valueOf(doc.getBoolean("local_agent"));
-		profileInfo[5] = "Last Online: " + String.valueOf(doc.getDate("last_login"));
+		profileInfo[3] = "<b>Reward Points: </b>" + String.valueOf(doc.getInteger("reward_pts"));
+		profileInfo[4] = "<b>Local Agent: </b>" + String.valueOf(doc.getBoolean("local_agent"));
+		profileInfo[5] = "<b>Last Online: </b>" + String.valueOf(doc.getDate("last_login"));
 		
 
 
@@ -388,7 +389,7 @@ public class DatabaseActions {
 			i++;
 		}
 		
-		
+		db.disconnect();
 		return n_ids; 
 	}
 	
@@ -413,7 +414,7 @@ public class DatabaseActions {
 			i++;
 		}
 		
-		
+		db.disconnect();
 		return names;
 	}
 }

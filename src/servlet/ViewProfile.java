@@ -1,9 +1,16 @@
 package servlet;
 
 
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Base64;
+
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import backend.DatabaseActions;
+import backend.PhotoScaler;
 import backend.User;
 
 /**
@@ -38,10 +46,11 @@ public class ViewProfile extends HttpServlet {
 		//make call to get user info to fill profile page
 		String profileInfo[] = DatabaseActions.getProfile(userObj.getN_id());
 		byte[] picture = DatabaseActions.getPicture(userObj.getN_id());
-
-		byte[] encoded = Base64.getEncoder().encode(picture);
 		
-		
+		//resize photo and convert to base64
+		byte[] newBuffer = PhotoScaler.resizeByteArray(250, 250, picture);
+		byte[] encoded = Base64.getEncoder().encode(newBuffer);
+	
 		String doctype = "<!doctype html public \"-//w3c//dtd html 4.0 " + "transitional//en\">\n";
 		
 		out.println(doctype + "<html>"
@@ -56,9 +65,20 @@ public class ViewProfile extends HttpServlet {
 				+ "<input type=\"submit\" value=\"Change Picture\">"
 				+ "</form>");
 		
+		/* [0] - name
+		 * [1] - email
+		 * [2] - photo name
+		 * [3] - reward points
+		 * [4] - local agent
+		 * [5] - last login
+		 * 
+		 */
 		for(int i = 0; i < profileInfo.length; i++) {
 			
-			out.println(profileInfo[i] + "</br></br>");
+			if(i != 2 && i != 4 && i != 5) {
+
+				out.println(profileInfo[i] + "</br></br>");
+			}
 		}
 		
 		out.println("<form action=\"Home\" method=\"GET\" id=\"returnButton\" class=\"servlet.Home\">"

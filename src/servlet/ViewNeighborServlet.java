@@ -50,10 +50,18 @@ public class ViewNeighborServlet extends HttpServlet {
 				+ "<body>"
 				+ "<img src =\"data:image/jpg;base64," + new String(encoded) +"\" alt=\"Image Not Found\"></br>");
 		
+		/* [0] - name
+		 * [1] - email
+		 * [2] - photo name
+		 * [3] - reward points
+		 * [4] - local agent
+		 * [5] - last login
+		 */
 		for(int i = 0; i < profile.length; i++) {
 			
-			
-			out.println(profile[i] + "</br></br>");
+			if(i != 2 && i != 4) {
+				out.println(profile[i] + "</br></br>");
+			}
 		}
 		
 		out.println("</body>"

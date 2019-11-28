@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Base64;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.bson.types.ObjectId;
 
 import backend.DatabaseActions;
+import backend.PhotoScaler;
 import backend.User;
 
 /**
@@ -46,12 +48,18 @@ public class NeighborListServlet extends HttpServlet {
 				+ "<body>"
 				+ "<h1>Your Neighbors</h1></br>");
 		
-		
+		//byte[] n_pic = null;
 		for(String s : names) {
 
 			if(n_id.compareTo(ids[i]) != 0) {
 				
-				out.println("</br>" + s + "  "
+				byte[] n_pic = DatabaseActions.getPicture(ids[i]);
+				n_pic = PhotoScaler.resizeByteArray(75, 75, n_pic);
+				byte[] encoded = Base64.getEncoder().encode(n_pic);
+				
+				out.println("</br>" 
+						+ "<img src =\"data:image/jpg;base64," + new String(encoded) +"\" alt=\"Image Not Found\"></br>"
+						+ s + "  "
 						+ "<form action=\"ViewNeighbor\">"
 						+ "<input type=\"hidden\" name=\"n_id\" value=\"" + ids[i] + "\">"
 						+ "<input type=\"submit\" value=\"View Profile\">"
