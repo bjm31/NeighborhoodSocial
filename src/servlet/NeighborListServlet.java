@@ -25,29 +25,38 @@ public class NeighborListServlet extends HttpServlet {
 		
 		ObjectId[] ids = DatabaseActions.getNeighborList();
 		String[] names = DatabaseActions.getAllNames();
+		int i = 0;
 		String doctype = "<!doctype html public \"-//w3c//dtd html 4.0 " + "transitional//en\">\n";
 		out = response.getWriter();
 		
 		out.println(doctype + "<html>"
 				+ "<head>"
 				+ "<title>Neighbor List</title>"
-				+ "</style>"
 				+ "</head>"
 				+ "<body>"
 				+ "<h1>Your Neighbors</h1></br>");
 		
 		for(String s : names) {
+		
 			out.println("</br>" + s + "  "
-					+ "<button>View Profile</button>"
+					+ "<form action=\"ViewNeighbor\">"
+					+ "<input type=\"hidden\" name=\"n_id\" value=\"" + ids[i] + "\">"
+					+ "<input type=\"submit\" value=\"View Profile\">"
+					+ "</form>"
 					+ "</br>");
-			
+			i++;
 		}
-		out.println("</body>"
+		out.println("<form action=\"Home\">"
+				+ "<input type=\"submit\" value=\"Home\">"
+				+ "</form>"
+				+ "</body>"
 				+ "</html>");
-		//TODO
-		//Use Ids to get Name and profile info
-	}
+		
 
+	}
+	protected void test() {
+		System.out.println("TEST");
+	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
