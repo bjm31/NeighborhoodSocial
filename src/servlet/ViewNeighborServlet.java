@@ -21,13 +21,16 @@ import backend.DatabaseActions;
 public class ViewNeighborServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	PrintWriter out;
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		
+		
 		out = response.getWriter();
 		String n_id = request.getParameter("n_id");
+		
 		String doctype = "<!doctype html public \"-//w3c//dtd html 4.0 " + "transitional//en\">\n";
 		ObjectId objId = new ObjectId(n_id);
-		System.out.println(n_id);
+
 		
 		String[] profile = DatabaseActions.getProfile(objId);
 		byte[] picture = DatabaseActions.getPicture(objId);
@@ -48,6 +51,7 @@ public class ViewNeighborServlet extends HttpServlet {
 				+ "<img src =\"data:image/jpg;base64," + new String(encoded) +"\" alt=\"Image Not Found\"></br>");
 		
 		for(int i = 0; i < profile.length; i++) {
+			
 			
 			out.println(profile[i] + "</br></br>");
 		}
