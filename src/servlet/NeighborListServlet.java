@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Base64;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,6 +35,10 @@ public class NeighborListServlet extends HttpServlet {
 		String[] names = DatabaseActions.getAllNames();
 		
 		session = request.getSession();
+		if (session == null) {
+			RequestDispatcher rd = request.getRequestDispatcher("index.html");
+			rd.forward(request, response);
+		}
 		user = (User) session.getAttribute("user");		
 		ObjectId n_id = user.getN_id();
 		

@@ -30,6 +30,10 @@ public class UpdatePicServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		session = request.getSession();
+		if (session == null) {
+			RequestDispatcher rd = request.getRequestDispatcher("index.html");
+			rd.forward(request, response);
+		}
 		user = (User) session.getAttribute("user");
 		
 		byte[] buffer = new byte[16384];		
