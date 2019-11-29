@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.bson.types.ObjectId;
 
 import backend.DatabaseActions;
+import backend.PhotoScaler;
 
 /**
  * Servlet implementation class ViewNeighborServlet
@@ -34,12 +35,8 @@ public class ViewNeighborServlet extends HttpServlet {
 		
 		String[] profile = DatabaseActions.getProfile(objId);
 		byte[] picture = DatabaseActions.getPicture(objId);
+		picture = PhotoScaler.resizeByteArray(200, 200, picture);
 		byte[] encoded = Base64.getEncoder().encode(picture);
-		
-		for(String s : profile) {
-			
-			System.out.println(s);
-		}
 
 		
 		out.println(doctype + "<html>"
