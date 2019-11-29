@@ -28,7 +28,10 @@ public class LoginServlet extends HttpServlet {
 		
 		//Create a session
 		session = request.getSession();
-		
+		if (session == null) {
+			RequestDispatcher rd = request.getRequestDispatcher("index.html");
+			rd.forward(request, response);
+		}
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		

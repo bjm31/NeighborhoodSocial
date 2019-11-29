@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.util.Base64;
 
 import javax.imageio.ImageIO;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,12 +37,20 @@ public class ViewProfile extends HttpServlet {
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
 		//Get user session
 		session = request.getSession(false);
+		if (session == null) {
+			RequestDispatcher rd = request.getRequestDispatcher("index.html");
+			rd.forward(request, response);
+		}
+		if (session == null) {
+			RequestDispatcher rd = request.getRequestDispatcher("index.html");
+			rd.forward(request, response);
+		}
 		userObj = (User) session.getAttribute("user");
 		response.setContentType("text/html");
 		out = response.getWriter();
+		
 		
 		//make call to get user info to fill profile page
 		String profileInfo[] = DatabaseActions.getProfile(userObj.getN_id());

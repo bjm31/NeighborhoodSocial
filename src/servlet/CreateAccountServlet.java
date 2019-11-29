@@ -79,7 +79,10 @@ public class CreateAccountServlet extends HttpServlet {
 		if (goodPassword && goodUsername) {
 			
 			HttpSession session = request.getSession();
-			
+			if (session == null) {
+				RequestDispatcher rd = request.getRequestDispatcher("index.html");
+				rd.forward(request, response);
+			}
 			User user = (User) request.getSession().getAttribute("user");
 			
 			

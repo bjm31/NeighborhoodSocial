@@ -25,6 +25,10 @@ public class Logout extends HttpServlet {
 		
 		//End user's session
 		session = request.getSession(false);
+		if (session == null) {
+			RequestDispatcher rd = request.getRequestDispatcher("index.html");
+			rd.forward(request, response);
+		}
 		session.invalidate();
 		
 		//Take user back to locgin screen
