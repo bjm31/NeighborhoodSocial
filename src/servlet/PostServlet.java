@@ -33,7 +33,7 @@ public class PostServlet extends HttpServlet {
 		
 		postType = request.getParameter("postType");
 		post = request.getParameter("post");
-		System.out.println("Post: " + post + "\npost type: " + postType);
+
 		
 		DatabaseActions.savePost(n_id, postType, post);	
 		

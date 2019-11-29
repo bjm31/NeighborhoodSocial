@@ -48,7 +48,7 @@ public class NeighborListServlet extends HttpServlet {
 				+ "<body>"
 				+ "<h1>Your Neighbors</h1></br>");
 		
-		//byte[] n_pic = null;
+
 		for(String s : names) {
 
 			if(n_id.compareTo(ids[i]) != 0) {
@@ -63,6 +63,10 @@ public class NeighborListServlet extends HttpServlet {
 						+ "<form action=\"ViewNeighbor\">"
 						+ "<input type=\"hidden\" name=\"n_id\" value=\"" + ids[i] + "\">"
 						+ "<input type=\"submit\" value=\"View Profile\">"
+						+ "</form>"
+						+ "<form action=\"MakeMessage\">"
+						+ "<input type=\"hidden\" name=\"previous\" value=\"NeighborList\">"
+						+ "<input type=\"submit\" value=\"Send Message\">"
 						+ "</form>"
 						+ "</br>");
 				
