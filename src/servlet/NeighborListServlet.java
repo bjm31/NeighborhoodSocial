@@ -41,8 +41,9 @@ public class NeighborListServlet extends HttpServlet {
 		}
 		user = (User) session.getAttribute("user");		
 		ObjectId n_id = user.getN_id();
-		
+		response.setContentType("text/html");
 		int i = 0;
+		
 		String doctype = "<!doctype html public \"-//w3c//dtd html 4.0 " + "transitional//en\">\n";
 		out = response.getWriter();
 		
@@ -71,6 +72,7 @@ public class NeighborListServlet extends HttpServlet {
 						+ "</form>"
 						+ "<form action=\"MakeMessage\">"
 						+ "<input type=\"hidden\" name=\"previous\" value=\"NeighborList\">"
+						+ "<input type=\"hidden\" name=\"name\" value=\"" + s + "\">"
 						+ "<input type=\"submit\" value=\"Send Message\">"
 						+ "</form>"
 						+ "</br>");

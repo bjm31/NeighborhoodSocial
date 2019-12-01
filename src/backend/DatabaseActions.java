@@ -71,8 +71,24 @@ public class DatabaseActions {
 		
 		db = new DatabaseConnection("standard_user");
 		coll = db.getDatabase().getCollection("Neighbor");
-		n_id = (ObjectId) coll.find(eq("user_name", username)).first().get("_id");
 		
+		
+		n_id = (ObjectId) coll.find(eq("user_name", username)).first().get("_id");
+		db.disconnect();
+		return n_id;
+	}
+	//Get N_id with display name
+	public static ObjectId getN_id2(String display_name) {
+		DatabaseConnection db 			= null;
+		MongoCollection<Document> coll 	= null;
+		ObjectId n_id					= null;
+		
+		db = new DatabaseConnection("standard_user");
+		coll = db.getDatabase().getCollection("Neighbor");
+		
+		n_id = (ObjectId) coll.find(eq("display_name", display_name)).first().get("_id");
+		
+		db.disconnect();
 		return n_id;
 	}
 	
@@ -300,6 +316,7 @@ public class DatabaseActions {
 		if (!(doc == null)) {
 			exists = true;
 		}
+		db.disconnect();
 		return exists;
 	}
 	
@@ -416,5 +433,105 @@ public class DatabaseActions {
 		
 		db.disconnect();
 		return names;
+	}
+	
+	public static String getDisplayName(ObjectId n_id) {
+		
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+		Document doc					= null;	
+		String name						= null;
+		
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Neighbor");
+
+		doc = coll.find(eq("_id", n_id)).first();
+
+		name = doc.getString("display_name");
+		db.disconnect();
+
+		return name;
+	}
+	
+	
+	//store message to DB
+	public static void saveMessage(ObjectId from, ObjectId to, String message) {
+		
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+		Document doc					= null;
+	
+		
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Message");
+
+		doc = new Document();
+		doc.append("from_id", from);
+		doc.append("to_id", to);
+		doc.append("message", message);
+		doc.append("time_posted", Instant.now());
+
+		coll.insertOne(doc);
+		db.disconnect();
+	}
+	
+
+	
+	public static String[][] getMessages(ObjectId n_id) {
+		
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+		String[][] messages				= null;
+		String msgFormat				= null;
+		StringBuilder sb				= null;
+		int msgNum = 0;
+		int i = 0;
+		
+		DateFormat dateString = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Message");
+
+		FindIterable<Document> msgDocs = coll.find();
+		
+		//makes array with size of number of msgs
+		//msgNum = (int) db.getDatabase().getCollection("Message").countDocuments();
+		
+		for(Document doc : msgDocs) {
+			if(doc.getObjectId("to_id").compareTo(n_id) == 0 || doc.getObjectId("from_id").compareTo(n_id) == 0) {
+				
+				msgNum++;
+			}
+		}
+
+		messages = new String[msgNum][4];
+		
+		
+		for(Document doc : msgDocs) {
+			if(doc.getObjectId("to_id").compareTo(n_id) == 0 || doc.getObjectId("from_id").compareTo(n_id) == 0) {
+				
+				//Make msg string break in certain places, so it is not too long on the page
+				msgFormat = doc.getString("message");
+				sb = new StringBuilder(msgFormat);
+				
+				for(int k = 70; k < msgFormat.length(); k += 70) {
+					
+					sb.insert(k, "-</br>");
+				}
+			
+			
+					
+				messages[i][0] = getDisplayName(doc.getObjectId("from_id"));
+				messages[i][1] = getDisplayName(doc.getObjectId("to_id"));
+				messages[i][2] = "" + sb;
+				messages[i][3] = dateString.format(doc.getDate("time_posted"));
+
+				i++;
+			}
+			
+		}
+			
+		
+		db.disconnect();
+		return messages;
 	}
 }

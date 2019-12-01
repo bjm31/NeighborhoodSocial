@@ -56,6 +56,8 @@ public class ViewProfile extends HttpServlet {
 		String profileInfo[] = DatabaseActions.getProfile(userObj.getN_id());
 		byte[] picture = DatabaseActions.getPicture(userObj.getN_id());
 		
+
+		
 		//resize photo and convert to base64
 		byte[] newBuffer = PhotoScaler.resizeByteArray(250, 250, picture);
 		byte[] encoded = Base64.getEncoder().encode(newBuffer);

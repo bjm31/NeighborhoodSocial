@@ -30,6 +30,7 @@ public class ViewNeighborServlet extends HttpServlet {
 		String n_id = request.getParameter("n_id");
 		
 		String doctype = "<!doctype html public \"-//w3c//dtd html 4.0 " + "transitional//en\">\n";
+		System.out.println("ID: " + n_id);
 		ObjectId objId = new ObjectId(n_id);
 
 		
@@ -60,12 +61,19 @@ public class ViewNeighborServlet extends HttpServlet {
 				out.println(profile[i] + "</br></br>");
 			}
 		}
+		String name = profile[0].substring(profile[0].indexOf('>', 3) + 1);
 		
-		out.println("</body>"
-				+ "</html>"
+		System.out.println("NAME: " + profile[0].substring(profile[0].indexOf('>', 3) + 1));
+		out.println("<form action=\"MakeMessage\" method=\"POST\">"
+				+ "<input type=\"hidden\" name=\"previous\" value=\"ViewNeighbor\">"
+				+ "<input type=\"hidden\" name=\"name\" value=\"" + name + "\">"
+				+ "<input type=\"submit\" value=\"Send Message\">"
+				+ "</form>"
 				+ "<form action=\"NeighborList\" method=\"POST\">"
 				+ "<input type=\"submit\" value=\"Go Back\">"
-				+ "</form>");
+				+ "</form>"
+				+ "</body>"
+				+ "</html>");
 	}
 
 
