@@ -63,7 +63,7 @@ public class ViewNeighborServlet extends HttpServlet {
 		}
 		String name = profile[0].substring(profile[0].indexOf('>', 3) + 1);
 		
-		System.out.println("NAME: " + profile[0].substring(profile[0].indexOf('>', 3) + 1));
+	
 		out.println("<form action=\"MakeMessage\" method=\"POST\">"
 				+ "<input type=\"hidden\" name=\"previous\" value=\"ViewNeighbor\">"
 				+ "<input type=\"hidden\" name=\"name\" value=\"" + name + "\">"

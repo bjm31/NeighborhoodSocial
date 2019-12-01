@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.bson.types.ObjectId;
+
 import backend.DatabaseActions;
 import backend.User;
 
@@ -33,8 +35,9 @@ public class ViewMessagesServlet extends HttpServlet {
 		int count = 0;
 		String doctype = "<!doctype html public \"-//w3c//dtd html 4.0 " + "transitional//en\">\n";
 		String filterType = request.getParameter("filterType");
-
-		String[][] msgs = DatabaseActions.getMessages(user.getN_id());
+		ObjectId n_id = user.getN_id();
+		String[][] msgs = DatabaseActions.getMessages(n_id); //[i][0] = From ID, [i][1] = TO ID, [i][2] = Message, [i][3] = Time Sent
+		String name = DatabaseActions.getDisplayName(n_id);
 		
 		out.println(doctype + "<html>"
 				+ "<head>"
@@ -56,10 +59,9 @@ public class ViewMessagesServlet extends HttpServlet {
 			for(int i = 0; i < msgs.length; i++) {
 
 				
-				if(msgs[i][1].equals(DatabaseActions.getDisplayName(user.getN_id()))) {
+				if(msgs[i][1].equals(name)) {
 					
 					out.println("</br><b>From: " + msgs[i][0] + " at " + msgs[i][3] + "</b></br></br>");
-					//out.println("TO: " + msgs[i][1]);
 					out.println(msgs[i][2] + "</br></br></br>");
 					count++;
 				}
@@ -81,10 +83,9 @@ public class ViewMessagesServlet extends HttpServlet {
 
 			for(int i = 0; i < msgs.length; i++) {
 
-				if(msgs[i][0].equals(DatabaseActions.getDisplayName(user.getN_id()))) {
+				if(msgs[i][0].equals(name)) {
 					
 					out.println("</br><b>To: " + msgs[i][1] + " at " + msgs[i][3] + "</b></br></br>");
-					//out.println("TO: " + msgs[i][1]);
 					out.println(msgs[i][2] + "</br></br></br>");
 					count++;
 				}
@@ -102,11 +103,9 @@ public class ViewMessagesServlet extends HttpServlet {
 
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
 		doGet(request, response);
 	}
 

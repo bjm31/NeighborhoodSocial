@@ -391,6 +391,7 @@ public class DatabaseActions {
 		MongoCollection<Document> coll	= null;
 		Document doc					= null;	
 		int num;
+		int i = 0;
 		db = new DatabaseConnection("standard");
 		coll = db.getDatabase().getCollection("Neighbor");
 		
@@ -399,7 +400,7 @@ public class DatabaseActions {
 		//makes array with size of number of posts
 		num = (int) db.getDatabase().getCollection("Neighbor").countDocuments();
 		ObjectId[] n_ids = new ObjectId[num];
-		int i = 0;
+		
 		for(Document d : list) {
 			
 			n_ids[i] = d.getObjectId("_id");
