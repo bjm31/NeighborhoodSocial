@@ -28,7 +28,10 @@ public class LoginServlet extends HttpServlet {
 		
 		//Create a session
 		session = request.getSession();
-		
+		if (session == null) {
+			RequestDispatcher rd = request.getRequestDispatcher("index.html");
+			rd.forward(request, response);
+		}
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		
@@ -42,7 +45,7 @@ public class LoginServlet extends HttpServlet {
 			userObj = new User(user, n_id);
 			session.setAttribute("user", userObj);			
 			
-			RequestDispatcher rd = request.getRequestDispatcher("successfulLogin.html");	// TODO replace with eventual home page
+			RequestDispatcher rd = request.getRequestDispatcher("/Home");
 			rd.forward(request, response);
 		}
 		else {

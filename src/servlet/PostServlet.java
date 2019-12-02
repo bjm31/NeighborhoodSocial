@@ -3,6 +3,8 @@ package servlet;
 import java.io.IOException;
 import backend.User;
 import backend.DatabaseActions;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,12 +30,16 @@ public class PostServlet extends HttpServlet {
 		
 		response.setContentType("text/html");
 		session = request.getSession(false); //continue current session
+		if (session == null) {
+			RequestDispatcher rd = request.getRequestDispatcher("index.html");
+			rd.forward(request, response);
+		}
 		user = (User) session.getAttribute("user");
 		ObjectId n_id = user.getN_id();
 		
 		postType = request.getParameter("postType");
 		post = request.getParameter("post");
-		System.out.println("Post: " + post + "\npost type: " + postType);
+
 		
 		DatabaseActions.savePost(n_id, postType, post);	
 		

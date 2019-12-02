@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class InviteServlet
@@ -17,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 public class InviteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	HttpSession session;
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -34,7 +37,12 @@ public class InviteServlet extends HttpServlet {
 			
 			// add user info to session
 			User user = new User(inviteCode);
-			request.getSession().setAttribute("user",  user);;
+			session = request.getSession();
+			if (session == null) {
+				RequestDispatcher rd = request.getRequestDispatcher("index.html");
+				rd.forward(request, response);
+			}
+			session.setAttribute("user",  user);;
 			
 			RequestDispatcher rd = request.getRequestDispatcher("new_user.html");
 			rd.forward(request, response);

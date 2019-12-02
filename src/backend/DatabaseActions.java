@@ -1,16 +1,12 @@
 package backend;
 
-//import com.mongodb.BasicDBObject;
-//import com.mongodb.CommandResult;
-//import com.mongodb.DBObject;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-//import com.mongodb.client.MongoIterable;
-
 import org.bson.Document;
+import org.bson.types.Binary;
 import org.bson.types.ObjectId;
 import static com.mongodb.client.model.Filters.*;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -75,8 +71,24 @@ public class DatabaseActions {
 		
 		db = new DatabaseConnection("standard_user");
 		coll = db.getDatabase().getCollection("Neighbor");
-		n_id = (ObjectId) coll.find(eq("user_name", username)).first().get("_id");
 		
+		
+		n_id = (ObjectId) coll.find(eq("user_name", username)).first().get("_id");
+		db.disconnect();
+		return n_id;
+	}
+	//Get N_id with display name
+	public static ObjectId getN_id2(String display_name) {
+		DatabaseConnection db 			= null;
+		MongoCollection<Document> coll 	= null;
+		ObjectId n_id					= null;
+		
+		db = new DatabaseConnection("standard_user");
+		coll = db.getDatabase().getCollection("Neighbor");
+		
+		n_id = (ObjectId) coll.find(eq("display_name", display_name)).first().get("_id");
+		
+		db.disconnect();
 		return n_id;
 	}
 	
@@ -115,7 +127,7 @@ public class DatabaseActions {
 	 * @param email
 	 * @param photo
 	 */
-	public static void createNewUser(String inviteCode, String username, String fname, String lname, String email, String photo) {
+	public static void createNewUser(String inviteCode, String username, String fname, String lname, String email, String photo, byte[] file) {
 		DatabaseConnection db1			= null;
 		DatabaseConnection db2			= null;
 		DatabaseConnection db3			= null;
@@ -128,7 +140,7 @@ public class DatabaseActions {
 		StringBuilder sb				= null;
 		ObjectId h_id					= null;
 		ObjectId n_id					= null;
-		
+
 		sb = new StringBuilder();
 		sb.append(fname).append(" ").append(lname);
 		displayName = sb.toString();
@@ -147,11 +159,15 @@ public class DatabaseActions {
 		doc2.append("user_name", username);
 		doc2.append("display_name", displayName);
 		doc2.append("email", email);
-		doc2.append("photo", photo);			// TODO modify to either: save photo bit data or reference to local server storage
+		doc2.append("photo", photo);			
+		doc2.append("fileData", file);
 		doc2.append("reward_pts",  0);
 		doc2.append("local_agent", false);
 		doc2.append("last_login", Instant.now());
-		db2 = new DatabaseConnection("standard");
+		
+		
+		db2 = new DatabaseConnection("standard");		
+		
 		coll2 = db2.getDatabase().getCollection("Neighbor");
 		coll2.insertOne(doc2);
 		n_id = (ObjectId) doc2.getObjectId("_id");
@@ -274,7 +290,8 @@ public class DatabaseActions {
 			}
 			
 			//Creates String to fill post array
-			dbPosts[i] = "<b><p>\n" + doc.getString("display_name") 
+			dbPosts[i] = "<p hidden>" + doc.getObjectId("N_id") + "</p>"
+					    + "<b><p>\n" + doc.getString("display_name") 
 						+ "\n at \n" +  dateString.format(doc.getDate("time_posted")) + "\n</b></p>"
 						+ "<p><b>Type: [\n" + doc.getString("type") + "\n]</b></p></br>"
 						+ "<p>\n" + sb + "\n</p>";
@@ -299,6 +316,7 @@ public class DatabaseActions {
 		if (!(doc == null)) {
 			exists = true;
 		}
+		db.disconnect();
 		return exists;
 	}
 	
@@ -319,16 +337,202 @@ public class DatabaseActions {
 		profileInfo = new String[numAttributes];
 		
 		//Add all needed user info into a string array
-		profileInfo[0] = "Name: " + doc.getString("display_name");
-		profileInfo[1] = "Email: " + doc.getString("email");
+
+		profileInfo[0] = "<b>Name: </b>" + doc.getString("display_name");
+		profileInfo[1] = "<b>Email: </b>" + doc.getString("email");
 		profileInfo[2] = doc.getString("photo");
-		profileInfo[3] = "Reward Points: " + String.valueOf(doc.getInteger("reward_pts"));
-		profileInfo[4] = String.valueOf(doc.getBoolean("local_agent"));
-		profileInfo[5] = "Last Online: " + String.valueOf(doc.getDate("last_login"));
+		profileInfo[3] = "<b>Reward Points: </b>" + String.valueOf(doc.getInteger("reward_pts"));
+		profileInfo[4] = "<b>Local Agent: </b>" + String.valueOf(doc.getBoolean("local_agent"));
+		profileInfo[5] = "<b>Last Online: </b>" + String.valueOf(doc.getDate("last_login"));
 		
-		
+
+
 		db.disconnect();
 		return profileInfo;
 		
+	}
+	public static byte[] getPicture(ObjectId n_id) {
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+		Document doc					= null;	
+		
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Neighbor");
+		doc = coll.find(eq("_id", n_id)).first();
+		
+		Binary data = doc.get("fileData", Binary.class);
+		byte[] fileData = data.getData();
+		
+
+		db.disconnect();
+		return fileData;
+	}
+	public static void setPicture(ObjectId n_id, byte[] file) {
+		
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+		Document doc					= null;	
+		
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Neighbor");
+		doc = coll.find(eq("_id", n_id)).first();
+		
+		BasicDBObject newDoc = new BasicDBObject();
+		newDoc.append("$set",  new BasicDBObject().append("fileData", file));
+		
+		
+		coll.updateOne(doc, newDoc);
+		db.disconnect();
+	}
+	//returns list of Neighbor Ids
+	public static ObjectId[] getNeighborList() {
+		
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+		Document doc					= null;	
+		int num;
+		int i = 0;
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Neighbor");
+		
+		FindIterable<Document> list = coll.find();
+		
+		//makes array with size of number of posts
+		num = (int) db.getDatabase().getCollection("Neighbor").countDocuments();
+		ObjectId[] n_ids = new ObjectId[num];
+		
+		for(Document d : list) {
+			
+			n_ids[i] = d.getObjectId("_id");
+			i++;
+		}
+		
+		db.disconnect();
+		return n_ids; 
+	}
+	
+	public static String[] getAllNames() {
+		
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+		Document doc					= null;	
+		int num;
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Neighbor");
+		
+		FindIterable<Document> list = coll.find();
+		
+		//makes array with size of number of posts
+		num = (int) db.getDatabase().getCollection("Neighbor").countDocuments();
+		String[] names = new String[num];
+		int i = 0;
+		for(Document d : list) {
+			
+			names[i] = d.getString("display_name");
+			i++;
+		}
+		
+		db.disconnect();
+		return names;
+	}
+	
+	public static String getDisplayName(ObjectId n_id) {
+		
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+		Document doc					= null;	
+		String name						= null;
+		
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Neighbor");
+
+		doc = coll.find(eq("_id", n_id)).first();
+
+		name = doc.getString("display_name");
+		db.disconnect();
+
+		return name;
+	}
+	
+	
+	//store message to DB
+	public static void saveMessage(ObjectId from, ObjectId to, String message) {
+		
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+		Document doc					= null;
+	
+		
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Message");
+
+		doc = new Document();
+		doc.append("from_id", from);
+		doc.append("to_id", to);
+		doc.append("message", message);
+		doc.append("time_posted", Instant.now());
+
+		coll.insertOne(doc);
+		db.disconnect();
+	}
+	
+
+	
+	public static String[][] getMessages(ObjectId n_id) {
+		
+		DatabaseConnection db			= null;
+		MongoCollection<Document> coll	= null;
+		String[][] messages				= null;
+		String msgFormat				= null;
+		StringBuilder sb				= null;
+		int msgNum = 0;
+		int i = 0;
+		
+		DateFormat dateString = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+		db = new DatabaseConnection("standard");
+		coll = db.getDatabase().getCollection("Message");
+
+		FindIterable<Document> msgDocs = coll.find();
+		
+		//makes array with size of number of msgs
+		//msgNum = (int) db.getDatabase().getCollection("Message").countDocuments();
+		
+		for(Document doc : msgDocs) {
+			if(doc.getObjectId("to_id").compareTo(n_id) == 0 || doc.getObjectId("from_id").compareTo(n_id) == 0) {
+				
+				msgNum++;
+			}
+		}
+
+		messages = new String[msgNum][4];
+		
+		
+		for(Document doc : msgDocs) {
+			if(doc.getObjectId("to_id").compareTo(n_id) == 0 || doc.getObjectId("from_id").compareTo(n_id) == 0) {
+				
+				//Make msg string break in certain places, so it is not too long on the page
+				msgFormat = doc.getString("message");
+				sb = new StringBuilder(msgFormat);
+				
+				for(int k = 70; k < msgFormat.length(); k += 70) {
+					
+					sb.insert(k, "-</br>");
+				}
+			
+			
+					
+				messages[i][0] = getDisplayName(doc.getObjectId("from_id"));
+				messages[i][1] = getDisplayName(doc.getObjectId("to_id"));
+				messages[i][2] = "" + sb;
+				messages[i][3] = dateString.format(doc.getDate("time_posted"));
+
+				i++;
+			}
+			
+		}
+			
+		
+		db.disconnect();
+		return messages;
 	}
 }
