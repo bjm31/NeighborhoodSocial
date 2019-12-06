@@ -11,7 +11,7 @@ Contains front-end and back-end development, along with all code and documents n
   B. Deployment/Installation instructions
     see file: /Documentation/NeighborhoodSocial_Deployment.pdf
 
-3. Code, scripts,
+3. Code, scripts
   A. Source code
     see: /src/...
 
