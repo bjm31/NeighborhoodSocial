@@ -3,7 +3,7 @@ Contains front-end and back-end development, along with all code and documents n
 
 1. Project report
 
-  see file: /Doumentation/Runtime_Terror1_final_report.docx.pdf
+  see file: /Doumentation/Runtime_Terror1_final_report.pdf
 
 2. Manuals
 
